@@ -1,0 +1,51 @@
+const cast = [
+  {
+    id: 1,
+    actor: 'Ram Charan',
+    character: 'Peddi',
+    image: '/images/Peddi001.jpg',
+    fallback: 'https://picsum.photos/seed/rc1/400/500',
+    description: '8 months of pehelwan training. 5:30 AM akharas. The gada as his soul. Ram Charan becomes Vizianagaram.',
+  },
+  {
+    id: 2,
+    actor: 'Janhvi Kapoor',
+    character: 'Achiyyamma',
+    image: '/images/Peddi003.jpg',
+    fallback: 'https://picsum.photos/seed/jk2/400/500',
+    description: 'The emotional heartbeat of Vizianagaram. Achiyyamma\'s quiet strength becomes Peddi\'s greatest courage.',
+  },
+  {
+    id: 3,
+    actor: 'Shiva Rajkumar',
+    character: 'Gournaidu',
+    image: '/images/Peddi004.jpg',
+    fallback: 'https://picsum.photos/seed/sr3/400/500',
+    description: 'Kannada superstar. A rival who controls the village\'s fate. A face-off that shakes the screen.',
+  },
+  {
+    id: 4,
+    actor: 'Jagapathi Babu',
+    character: 'Appalasoori',
+    image: '/images/Peddi005.jpg',
+    fallback: 'https://picsum.photos/seed/jb4/400/500',
+    description: 'The village elder whose blessing carries the weight of generations.',
+  },
+  {
+    id: 5,
+    actor: 'Divyenndu',
+    character: 'Ram Bujji',
+    image: '/images/Peddi006.jpg',
+    fallback: 'https://picsum.photos/seed/dv5/400/500',
+    description: 'Comic relief with a golden heart — the friend every hero needs.',
+  },
+  {
+    id: 6,
+    actor: 'Boman Irani',
+    character: 'Special Role',
+    image: '/images/Peddi008.jpg',
+    fallback: 'https://picsum.photos/seed/bi6/400/500',
+    description: 'A masterclass performer adding gravitas to every frame.',
+  },
+];
+export default cast;
