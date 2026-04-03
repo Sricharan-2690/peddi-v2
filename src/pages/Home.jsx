@@ -49,7 +49,6 @@ function AnimatedStat({ value, label, suffix = "", duration = 2000 }) {
 }
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
   const [updatesCategory, setUpdatesCategory] = useState('All');
   const { theme } = useTheme();
   const isLight = theme === 'light';
@@ -131,11 +130,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // initial loading animation 2s
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+
 
   // Translated time labels
   const timeLabels = {
@@ -165,19 +160,7 @@ export default function Home() {
     goldText: 'hero-text-gradient'
   };
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 bg-p-black z-50 flex items-center justify-center">
-        {/* Mock video loader */}
-        <video className="absolute inset-0 w-full h-full object-cover opacity-30" autoPlay loop muted playsInline>
-          <source src="/videos/hero-bg.mp4" type="video/mp4" />
-        </video>
-        <div className="relative z-10 flex flex-col items-center animate-pulse">
-           <div className="w-12 h-12 border-4 border-p-amber border-t-transparent rounded-full animate-spin shadow-[0_0_15px_rgba(255,157,0,0.5)]"></div>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className={`min-h-screen font-inter transition-colors duration-500 flex flex-col pt-16 ${themeClasses.bgApp} selection:bg-p-amber/30`}>
