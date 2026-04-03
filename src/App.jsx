@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
+import { LanguageProvider } from './context/LanguageContext'
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -38,6 +39,7 @@ export default function App() {
   }
 
   return (
+    <LanguageProvider>
     <ThemeProvider>
     <BrowserRouter>
       <ScrollToTop />
@@ -65,5 +67,6 @@ export default function App() {
       </div>
     </BrowserRouter>
     </ThemeProvider>
+    </LanguageProvider>
   )
 }

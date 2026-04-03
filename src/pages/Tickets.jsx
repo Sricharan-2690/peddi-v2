@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import languages from '../data/languages';
 import { Check } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const platforms = [
   {name:'BookMyShow', url:'https://in.bookmyshow.com'},
@@ -14,6 +15,8 @@ const platforms = [
 // Timer matching the Hero Section style
 const CompactTimer = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+  const { t } = useLanguage();
+
   useEffect(() => {
     const target = new Date('2026-04-30T00:30:00+05:30').getTime();
     const interval = setInterval(() => {
@@ -31,6 +34,13 @@ const CompactTimer = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const timeLabels = {
+    days: t('time.days'),
+    hours: t('time.hours'),
+    mins: t('time.mins'),
+    secs: t('time.secs')
+  };
+
   return (
     <div className="flex justify-center items-center gap-1 sm:gap-3 mt-8">
       {Object.entries(timeLeft).map(([unit, value], i, arr) => (
@@ -44,7 +54,7 @@ const CompactTimer = () => {
                 {value.toString().padStart(2, '0')}
               </span>
             </div>
-            <span className="font-inter text-[8px] font-black tracking-[0.15em] uppercase mt-1.5 text-[#FF9D00] opacity-60">{unit}</span>
+            <span className="font-inter text-[8px] font-black tracking-[0.15em] uppercase mt-1.5 text-[#FF9D00] opacity-60">{timeLabels[unit]}</span>
           </div>
           {i < arr.length - 1 && (
             <div className="flex flex-col gap-1 mb-4">
@@ -59,6 +69,8 @@ const CompactTimer = () => {
 };
 
 export default function Tickets() {
+  const { t } = useLanguage();
+
   return (
     <div className="w-full hero-bg min-h-screen">
       {/* HERO */}
@@ -66,7 +78,7 @@ export default function Tickets() {
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
         <div className="z-10 flex flex-col items-center justify-center">
           <span className="mb-4 bg-gradient-to-r from-[#FFB733] to-[#FF9D00] text-white font-inter font-black text-[9px] sm:text-[10px] tracking-widest px-5 py-2 rounded-full uppercase shadow-[0_0_15px_rgba(255,157,0,0.4)]">
-            WORLDWIDE THEATRICAL RELEASE
+            {t('home.worldwideRelease')}
           </span>
           <h1
             className="font-dirt font-black text-5xl md:text-7xl hero-text-gradient uppercase tracking-tight"
@@ -80,7 +92,7 @@ export default function Tickets() {
       {/* BOOKING PLATFORMS */}
       <section className="max-w-2xl mx-auto px-6 py-16">
         <h2 className="font-dirt font-black text-2xl md:text-3xl uppercase tracking-[0.1em] hero-text-gradient text-center">
-          BOOK YOUR SEATS
+          {t('tickets.bookYourSeats')}
         </h2>
         <div className="gold-divider" />
 
@@ -93,7 +105,7 @@ export default function Tickets() {
             >
               <h3 className="font-dirt font-bold uppercase tracking-wide text-base text-p-gold">{p.name}</h3>
               <span className="font-inter font-black text-xs text-[#FF9D00] tracking-[0.2em] group-hover:translate-x-1 transition-transform uppercase">
-                BOOK NOW →
+                {t('tickets.bookNow')}
               </span>
             </div>
           ))}
@@ -102,7 +114,7 @@ export default function Tickets() {
 
       {/* LANGUAGE SECTION */}
       <section className="py-16 px-6 text-center">
-        <h2 className="font-dirt font-black text-xl md:text-2xl uppercase tracking-[0.1em] text-p-gold">AVAILABLE IN 5 LANGUAGES</h2>
+        <h2 className="font-dirt font-black text-xl md:text-2xl uppercase tracking-[0.1em] text-p-gold">{t('tickets.availableIn5Lang')}</h2>
         <div className="flex gap-2 sm:gap-4 justify-center flex-wrap mt-8">
           {languages.map(l => (
             <span key={l.lang} className="border border-[#FF9D00]/40 rounded-full px-5 py-2 text-xs text-p-gold font-inter font-black tracking-widest uppercase hover:bg-[#FF9D00]/5 cursor-default transition-colors">
@@ -115,13 +127,13 @@ export default function Tickets() {
       {/* DOLBY SECTION */}
       <section className="py-12 px-6 relative z-10">
         <div className="hero-glass-card rounded-2xl p-8 md:p-10 max-w-2xl mx-auto shadow-2xl relative z-10">
-          <h2 className="font-dirt font-black text-2xl md:text-3xl uppercase tracking-[0.1em] text-p-gold">DOLBY CINEMA</h2>
+          <h2 className="font-dirt font-black text-2xl md:text-3xl uppercase tracking-[0.1em] text-p-gold">{t('tickets.dolbyCinema')}</h2>
           <div className="gold-divider mx-0 w-16" />
           <p className="font-inter text-sm text-p-cream/80 mt-4 leading-relaxed max-w-lg">
-            Experience PEDDI in the most immersive theatrical format ever created.
+            {t('tickets.dolbyDesc')}
           </p>
           <ul className="mt-8 space-y-4">
-            {["Dolby Vision — Crystal clear, lifelike images", "Dolby Atmos — Hear every blade of grass in Vizianagaram", "Premium theatrical experience worldwide"].map((text, i) => (
+            {[t('tickets.dolbyVision'), t('tickets.dolbyAtmos'), t('tickets.premiumExperience')].map((text, i) => (
               <li key={i} className="flex flex-start gap-4">
                 <Check className="text-[#FF9D00] flex-shrink-0 mt-0.5" size={20} />
                 <span className="font-inter text-sm text-p-muted">{text}</span>

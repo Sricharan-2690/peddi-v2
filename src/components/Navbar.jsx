@@ -2,21 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Ticket, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSelector from './LanguageSelector';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
 
   const isLight = theme === 'light';
 
   const navLinks = [
-    { name: 'HOME', path: '/' },
-    { name: 'UPDATES', path: '/updates' },
-    { name: 'GALLERY', path: '/gallery' },
-    { name: 'CAST', path: '/cast' },
-    { name: 'RECORDS', path: '/analytics' }
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.updates'), path: '/updates' },
+    { name: t('nav.gallery'), path: '/gallery' },
+    { name: t('nav.cast'), path: '/cast' },
+    { name: t('nav.records'), path: '/analytics' }
   ];
 
   useEffect(() => {
@@ -74,7 +77,7 @@ export default function Navbar() {
               const isActive = location.pathname === link.path || (link.path === '/' && location.pathname === '');
               return (
                 <Link
-                  key={link.name}
+                  key={link.path}
                   to={link.path}
                   className={`font-inter text-xs font-bold tracking-[0.1em] uppercase transition-colors duration-300 ${
                     isActive ? linkActive : linkBase
@@ -87,10 +90,13 @@ export default function Navbar() {
           </div>
 
           {/* Actions & Mobile Toggle */}
-          <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex items-center gap-2 md:gap-3">
             <Link to="/tickets" className="hidden md:flex items-center gap-2 hero-btn-primary px-6 py-2.5 rounded-full text-xs">
-              <Ticket size={14} /> TICKETS
+              <Ticket size={14} /> {t('nav.tickets')}
             </Link>
+
+            {/* Language Selector */}
+            <LanguageSelector />
 
             {/* Theme Toggle */}
             <button
@@ -128,7 +134,7 @@ export default function Navbar() {
                  const isActive = location.pathname === link.path || (link.path === '/' && location.pathname === '');
                  return (
                    <Link 
-                     key={link.name}
+                     key={link.path}
                      to={link.path} 
                      onClick={() => setMobileMenuOpen(false)} 
                      className={`transition-colors duration-500 py-2 relative group ${isActive ? mobileLinkActive : mobileLinkBase}`}
@@ -144,7 +150,7 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)} 
                   className="mt-6 mx-auto hero-btn-primary flex items-center justify-center gap-2 px-10 py-5 rounded-full text-sm w-full"
                 >
-                  <Ticket size={20} /> BOOK TICKETS
+                  <Ticket size={20} /> {t('nav.bookTickets')}
                 </Link>
             </div>
          </div>

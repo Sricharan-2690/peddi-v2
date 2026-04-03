@@ -2,16 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import castData from '../data/castData';
 import crewData from '../data/crewData';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function CastCrew() {
+  const { t } = useLanguage();
+
   return (
     <div className="w-full hero-bg min-h-screen">
       {/* PAGE HERO */}
       <section className="relative flex items-end justify-center pb-8 md:pb-16 text-center pt-24 md:pt-32 overflow-hidden">
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
         <div className="z-10">
-          <h1 className="font-dirt font-black text-4xl md:text-5xl uppercase tracking-[0.1em] hero-text-gradient">CAST & CREW</h1>
-          <p className="font-inter font-bold text-xs tracking-[0.4em] text-p-muted mt-3 uppercase">MEET THE WORLD OF PEDDI</p>
+          <h1 className="font-dirt font-black text-4xl md:text-5xl uppercase tracking-[0.1em] hero-text-gradient">{t('cast.title')}</h1>
+          <p className="font-inter font-bold text-xs tracking-[0.4em] text-p-muted mt-3 uppercase">{t('cast.subtitle')}</p>
         </div>
       </section>
 
@@ -30,29 +33,27 @@ export default function CastCrew() {
           
           <div>
             <h2 className="font-dirt font-black uppercase text-4xl md:text-6xl text-p-gold leading-none">RAM CHARAN</h2>
-            <p className="font-inter font-bold tracking-[0.2em] text-sm text-p-gold mt-4 uppercase">as Peddi</p>
+            <p className="font-inter font-bold tracking-[0.2em] text-sm text-p-gold mt-4 uppercase">{t('cast.asPeddi')}</p>
             <div className="gold-divider mx-0 w-20 mt-4" />
             
             <p className="font-inter text-sm md:text-base text-p-cream/80 leading-relaxed md:leading-loose mt-6">
-              8 months of pehelwan training. 5:30 AM akharas. The gada as his soul. Ram Charan becomes Vizianagaram. 
-              In 1980s Vizianagaram, a spirited village cricketer transforms into a pehelwan — a wrestler who unites his 
-              community through sport, sacrifice, and sheer will.
+              {t('cast.rcDesc')}
             </p>
             
             <div className="hero-glass-card rounded-xl p-6 mt-8">
-              <h3 className="font-dirt font-bold text-xs tracking-[0.2em] text-p-gold mb-4 uppercase">THE TRANSFORMATION</h3>
+              <h3 className="font-dirt font-bold text-xs tracking-[0.2em] text-p-gold mb-4 uppercase">{t('cast.theTransformation')}</h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
                   <span className="font-dirt font-black text-xl md:text-2xl text-p-gold block">8 MONTHS</span>
-                  <span className="font-inter font-bold text-[10px] text-p-muted mt-2 tracking-widest uppercase block">Training</span>
+                  <span className="font-inter font-bold text-[10px] text-p-muted mt-2 tracking-widest uppercase block">{t('cast.training')}</span>
                 </div>
                 <div>
                   <span className="font-dirt font-black text-xl md:text-2xl text-p-gold block">5:30 AM</span>
-                  <span className="font-inter font-bold text-[10px] text-p-muted mt-2 tracking-widest uppercase block">Daily Akharas</span>
+                  <span className="font-inter font-bold text-[10px] text-p-muted mt-2 tracking-widest uppercase block">{t('cast.dailyAkharas')}</span>
                 </div>
                 <div>
                   <span className="font-dirt font-black text-xl md:text-2xl text-p-gold block">Ayyappa</span>
-                  <span className="font-inter font-bold text-[10px] text-p-muted mt-2 tracking-widest uppercase block">Deeksha</span>
+                  <span className="font-inter font-bold text-[10px] text-p-muted mt-2 tracking-widest uppercase block">{t('cast.deeksha')}</span>
                 </div>
               </div>
             </div>
@@ -63,7 +64,7 @@ export default function CastCrew() {
       {/* MAIN CAST LIST */}
       <section className="py-20 px-6 relative z-10">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="font-dirt font-black text-3xl uppercase tracking-widest text-p-gold inline-block">MAIN CAST</h2>
+          <h2 className="font-dirt font-black text-3xl uppercase tracking-widest text-p-gold inline-block">{t('cast.mainCast')}</h2>
           <div className="gold-divider w-24" />
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 text-left">
@@ -91,7 +92,7 @@ export default function CastCrew() {
       {/* CREW SECTION */}
       <section className="py-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-dirt font-black text-3xl uppercase tracking-widest text-p-gold inline-block">KEY CREW</h2>
+          <h2 className="font-dirt font-black text-3xl uppercase tracking-widest text-p-gold inline-block">{t('cast.keyCrew')}</h2>
           <div className="gold-divider w-24" />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12 text-left">

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef } from 'react';
 import languages from '../data/languages';
 import songsData from '../data/songsData';
 import { Play, Pause } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const SongCard = ({ song }) => {
   const [activeLang, setActiveLang] = useState(song.languages[0]);
@@ -81,6 +82,8 @@ const SongCard = ({ song }) => {
 };
 
 export default function Music() {
+  const { t } = useLanguage();
+
   return (
     <div className="w-full hero-bg min-h-screen">
       {/* AR RAHMAN SPOTLIGHT */}
@@ -93,12 +96,12 @@ export default function Music() {
         </h1>
 
         <div className="relative z-10 max-w-xl mx-auto md:ml-auto md:mr-12 lg:mr-32 hero-glass-card backdrop-blur-xl rounded-2xl p-10 shadow-2xl">
-          <span className="font-inter font-black text-xs tracking-widest text-p-muted uppercase">MUSIC BY</span>
+          <span className="font-inter font-black text-xs tracking-widest text-p-muted uppercase">{t('music.musicBy')}</span>
           <h2 className="font-dirt font-black text-5xl uppercase tracking-[0.1em] hero-text-gradient mt-2">A.R. Rahman</h2>
           <div className="gold-divider mx-0 w-20" />
           
           <p className="font-inter text-base italic text-p-cream/80 leading-relaxed mt-4">
-            "We wanted to recreate a raw, unsung energy that hasn't been heard since Humma Humma. Vizianagaram inspired sounds I've never explored."
+            {t('music.quote')}
           </p>
           
           <div className="flex gap-3 mt-6 flex-wrap">
@@ -116,7 +119,7 @@ export default function Music() {
       {/* SONGS SECTION */}
       <section className="py-20 px-6 relative z-10">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="font-dirt font-black text-4xl uppercase tracking-[0.1em] hero-text-gradient">OFFICIAL SOUNDTRACK</h2>
+          <h2 className="font-dirt font-black text-4xl uppercase tracking-[0.1em] hero-text-gradient">{t('music.officialSoundtrack')}</h2>
           <div className="gold-divider" />
           
           <div className="mt-12 space-y-8">

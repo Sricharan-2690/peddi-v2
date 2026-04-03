@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Ticket, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import castData from '../data/castData';
 import newsData from '../data/newsData';
 
@@ -52,6 +53,7 @@ export default function Home() {
   const [updatesCategory, setUpdatesCategory] = useState('All');
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const { t } = useLanguage();
 
   const titleImages = [
     '/images/title card in all langueges/English Title.png',
@@ -135,6 +137,22 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Translated time labels
+  const timeLabels = {
+    days: t('time.days'),
+    hours: t('time.hours'),
+    mins: t('time.mins'),
+    secs: t('time.secs')
+  };
+
+  // Filter categories translated
+  const filterCategories = [
+    { key: 'All', label: t('filter.all') },
+    { key: 'Trailers', label: t('filter.trailers') },
+    { key: 'Songs', label: t('filter.songs') },
+    { key: 'Reels', label: t('filter.reels') },
+  ];
+
   // Premium Tokens based on reference image
   const themeClasses = {
     bgApp: 'hero-bg',
@@ -171,7 +189,7 @@ export default function Home() {
         
         <div className="z-10 flex flex-col items-center w-full max-w-4xl mx-auto mt-6">
             <div className={`font-mont font-normal text-sm sm:text-base tracking-[0.4em] uppercase mb-8 sm:mb-10 text-center ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} drop-shadow-[0_0_6px_rgba(255,157,0,0.7)] leading-relaxed -translate-y-4`}>
-               Mega Power Star <br/> Ram Charan
+               {t('home.megaPowerStar')} <br/> {t('home.ramCharan')}
             </div>
             
             {/* Title Slideshow replacing PEDDI text */}
@@ -198,12 +216,12 @@ export default function Home() {
             </div>
             
             <h2 className={`font-mont font-semibold text-sm sm:text-lg md:text-xl tracking-[0.4em] uppercase mb-10 ${isLight ? 'text-[#2A1505]' : 'text-white'} drop-shadow-md`}>
-               THE RAGE BEGINS
+               {t('home.theRageBegins')}
             </h2>
 
             <div className="mb-10 sm:mb-12 flex flex-col items-center">
                <span className="mb-4 sm:mb-5 bg-gradient-to-r from-[#FFB733] to-[#FF9D00] text-white font-inter font-black text-[9px] sm:text-[10px] tracking-widest px-5 py-2 rounded-full uppercase shadow-[0_0_15px_rgba(255,157,0,0.4)]">
-                 WORLDWIDE THEATRICAL RELEASE
+                 {t('home.worldwideRelease')}
                </span>
                <h2 className="font-mont font-black text-4xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFB733] to-[#FF9D00] uppercase tracking-tight drop-shadow-[0_0_15px_rgba(255,157,0,0.4)] transition-all">
                  APRIL 30, 2026
@@ -224,7 +242,7 @@ export default function Home() {
                             {value.toString().padStart(2, '0')}
                           </span>
                        </div>
-                       <span className={`font-inter text-[8px] sm:text-[10px] font-black tracking-[0.2em] uppercase mt-2 sm:mt-3 ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} opacity-60`}>{unit}</span>
+                       <span className={`font-inter text-[8px] sm:text-[10px] font-black tracking-[0.2em] uppercase mt-2 sm:mt-3 ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} opacity-60`}>{timeLabels[unit]}</span>
                     </div>
                     
                     {idx < arr.length - 1 && (
@@ -241,11 +259,11 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
                <a href="https://in.bookmyshow.com/movies/hyderabad/peddi/ET00439772" target="_blank" rel="noopener noreferrer"
                   className={`w-full sm:w-[200px] h-14 rounded-full flex items-center justify-center gap-2 font-inter tracking-[0.2em] text-xs font-black transition-all duration-300 ${themeClasses.btnPrimary}`}>
-                  <Ticket size={16} /> BOOK TICKETS
+                  <Ticket size={16} /> {t('home.bookTickets')}
                </a>
                <a href="https://youtu.be/f4poVE-r8Ho?si=7_SjSUZaXbTNAhD1" target="_blank" rel="noopener noreferrer"
                   className={`w-full sm:w-[200px] h-14 rounded-full flex items-center justify-center gap-2 font-inter tracking-[0.2em] text-xs font-black transition-all duration-300 hero-btn-secondary`}>
-                  <Play size={16} fill="currentColor" /> WATCH TRAILER
+                  <Play size={16} fill="currentColor" /> {t('home.watchTrailer')}
                </a>
             </div>
         </div>
@@ -258,11 +276,9 @@ export default function Home() {
       {/* Overview Section */}
       <section className={`py-12 sm:py-16 px-6`}>
          <div className="max-w-4xl mx-auto text-center">
-            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-6 ${themeClasses.goldText}`}>OVERVIEW</h3>
-            <p className={`font-inter text-base sm:text-lg md:text-xl leading-relaxed font-light ${themeClasses.textMuted}`}>
-               Peddi is an upcoming Indian Telugu-language sports action drama film written and directed by Buchi Babu Sana. The film stars Ram Charan as the titular role, alongside Janhvi Kapoor, Shiva Rajkumar, Jagapathi Babu and Divyenndu. 
-               <br/><br/>
-               Set in 1980s Vizianagaram, it follows a spirited village cricketer who transforms into a pehelwan — a wrestler who unites his community through sport, sacrifice, and sheer will.
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-6 ${themeClasses.goldText}`}>{t('home.overview')}</h3>
+            <p className={`font-inter text-base sm:text-lg md:text-xl leading-relaxed font-light ${themeClasses.textMuted}`} style={{ whiteSpace: 'pre-line' }}>
+               {t('home.overviewText')}
             </p>
          </div>
       </section>
@@ -271,13 +287,13 @@ export default function Home() {
       <section className={`py-12 sm:py-16 px-6 ${themeClasses.bgApp}`}>
          <div className="max-w-6xl mx-auto">
             <div className="flex flex-col sm:flex-row justify-between items-center md:items-end mb-12 sm:mb-16 gap-6">
-               <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center sm:text-left ${themeClasses.goldText}`}>LATEST UPDATES</h3>
+               <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center sm:text-left ${themeClasses.goldText}`}>{t('home.latestUpdates')}</h3>
                
                {/* Desktop Category Menu inside updates */}
                <div className="hidden sm:flex gap-4 sm:gap-6 text-xs font-inter font-bold tracking-[0.1em] uppercase">
-                  {['All', 'Trailers', 'Songs', 'Reels'].map(cat => (
-                     <button key={cat} onClick={() => setUpdatesCategory(cat)} className={`pb-1 border-b-2 transition-colors ${updatesCategory === cat ? 'border-p-amber text-p-amber' : 'border-transparent ' + themeClasses.textMuted}`}>
-                        {cat}
+                  {filterCategories.map(cat => (
+                     <button key={cat.key} onClick={() => setUpdatesCategory(cat.key)} className={`pb-1 border-b-2 transition-colors ${updatesCategory === cat.key ? 'border-p-amber text-p-amber' : 'border-transparent ' + themeClasses.textMuted}`}>
+                        {cat.label}
                      </button>
                   ))}
                </div>
@@ -301,7 +317,7 @@ export default function Home() {
             
             <div className="text-center">
                <Link to="/updates" className={`inline-block px-10 py-4 rounded-full font-inter tracking-[0.2em] text-xs sm:text-sm font-black transition-all duration-300 hero-btn-secondary`}>
-                  VIEW ALL UPDATES
+                  {t('home.viewAllUpdates')}
                </Link>
             </div>
          </div>
@@ -310,7 +326,7 @@ export default function Home() {
       {/* Cast Section */}
       <section className={`py-24 sm:py-32 px-6 ${themeClasses.cardBg}`}>
          <div className="max-w-7xl mx-auto">
-            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center mb-16 ${themeClasses.goldText}`}>THE CAST</h3>
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center mb-16 ${themeClasses.goldText}`}>{t('home.theCast')}</h3>
             
             <div 
                ref={sliderRef}
@@ -361,7 +377,7 @@ export default function Home() {
             {/* View Full Cast Button */}
             <div className="text-center">
                <Link to="/cast" className={`inline-block px-10 py-4 rounded-full font-inter tracking-[0.2em] text-xs sm:text-sm font-black transition-all duration-300 hero-btn-secondary`}>
-                  VIEW FULL CAST
+                  {t('home.viewFullCast')}
                </Link>
             </div>
          </div>
@@ -370,17 +386,17 @@ export default function Home() {
       {/* Records & Analytics Section */}
       <section className={`py-24 sm:py-32 px-6 text-center ${themeClasses.bgApp} border-t ${themeClasses.border}`}>
          <div className="max-w-5xl mx-auto">
-            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-16 ${themeClasses.goldText}`}>RECORDS & IMPACT</h3>
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-16 ${themeClasses.goldText}`}>{t('home.recordsImpact')}</h3>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
-               <AnimatedStat value={46} suffix="M" label="Views (24h)" duration={2500} />
-               <AnimatedStat value={5} label="Languages" duration={1500} />
-               <AnimatedStat value={130} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label="Netflix Deal" duration={3000} />
-               <AnimatedStat value={300} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label="Est. Budget" duration={3500} />
+               <AnimatedStat value={46} suffix="M" label={t('stat.views24h')} duration={2500} />
+               <AnimatedStat value={5} label={t('stat.languages')} duration={1500} />
+               <AnimatedStat value={130} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label={t('stat.netflixDeal')} duration={3000} />
+               <AnimatedStat value={300} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label={t('stat.estBudget')} duration={3500} />
             </div>
             
             <Link to="/analytics" className={`inline-block px-10 py-4 rounded-full font-inter tracking-[0.2em] text-xs sm:text-sm font-black transition-all duration-300 hero-btn-secondary`}>
-               VIEW ALL ANALYTICS
+               {t('home.viewAllAnalytics')}
             </Link>
          </div>
       </section>

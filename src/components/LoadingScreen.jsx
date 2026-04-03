@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function LoadingScreen({ onDone }) {
   const [phase, setPhase] = useState(0);
@@ -7,6 +8,7 @@ export default function LoadingScreen({ onDone }) {
   const [particles, setParticles] = useState([]);
   const [imgError, setImgError] = useState(false);
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   const isLight = theme === 'light';
 
@@ -89,10 +91,10 @@ export default function LoadingScreen({ onDone }) {
       {/* Phase 5: Subtitle */}
       <div className={`absolute bottom-32 flex flex-col items-center text-center transition-opacity duration-500 ${phase >= 5 ? 'opacity-100' : 'opacity-0'}`}>
         <p className={`font-inter font-black text-[10px] tracking-[0.3em] ${isLight ? 'text-[#7A4A10]' : 'text-p-gold/70'} mb-2 uppercase`}>
-          A BUCHI BABU SANA FILM
+          {t('loading.aFilmBy')}
         </p>
         <p className={`font-inter text-[10px] ${isLight ? 'text-[#8B6040]' : 'text-p-muted/40'} uppercase tracking-[0.2em]`}>
-          MYTHRI MOVIE MAKERS · VRIDDHI CINEMAS · SUKUMAR WRITINGS
+          {t('loading.producers')}
         </p>
       </div>
 

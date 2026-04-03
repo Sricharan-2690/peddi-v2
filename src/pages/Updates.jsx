@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import newsData from '../data/newsData';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Updates() {
-  const filters = ['All', 'Trailers', 'Songs', 'Reels'];
   const [activeFilter, setActiveFilter] = useState('All');
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const { t } = useLanguage();
+
+  const filters = [
+    { key: 'All', label: t('filter.all') },
+    { key: 'Trailers', label: t('filter.trailers') },
+    { key: 'Songs', label: t('filter.songs') },
+    { key: 'Reels', label: t('filter.reels') },
+  ];
 
   const filteredNews = activeFilter === 'All' ? newsData : newsData.filter(n => n.category === activeFilter);
 
@@ -16,8 +24,8 @@ export default function Updates() {
       <section className={`relative h-[30vh] md:h-[40vh] flex items-end justify-center pb-12 pt-28 text-center ${isLight ? 'text-[#2A1505]' : 'text-white'} overflow-hidden`}>
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
         <div className="z-10">
-          <h1 className="font-dirt font-black text-4xl md:text-5xl uppercase tracking-[0.1em] hero-text-gradient">UPDATES</h1>
-          <p className={`font-inter font-bold text-xs tracking-[0.4em] ${isLight ? 'text-[#8B6040]' : 'text-p-muted'} mt-3 uppercase`}>NEWS AND ANNOUNCEMENTS</p>
+          <h1 className="font-dirt font-black text-4xl md:text-5xl uppercase tracking-[0.1em] hero-text-gradient">{t('updates.title')}</h1>
+          <p className={`font-inter font-bold text-xs tracking-[0.4em] ${isLight ? 'text-[#8B6040]' : 'text-p-muted'} mt-3 uppercase`}>{t('updates.subtitle')}</p>
         </div>
       </section>
 
@@ -26,15 +34,15 @@ export default function Updates() {
         <div className="flex gap-0 min-w-max md:justify-center border-b border-transparent">
           {filters.map(tab => (
             <button
-              key={tab}
-              onClick={() => setActiveFilter(tab)}
+              key={tab.key}
+              onClick={() => setActiveFilter(tab.key)}
               className={`font-inter font-black text-[10px] sm:text-xs tracking-widest px-5 py-4 cursor-pointer focus:outline-none transition-colors duration-200 uppercase whitespace-nowrap border-b-2
-                ${activeFilter === tab 
+                ${activeFilter === tab.key 
                   ? (isLight ? 'text-[#7A4A10] border-[#7A4A10]' : 'text-p-gold border-p-gold')
                   : (isLight ? 'text-[#8B6040] hover:text-[#7A4A10] border-transparent' : 'text-p-muted hover:text-p-gold border-transparent')
                 }`}
             >
-              {tab}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -60,14 +68,14 @@ export default function Updates() {
                   {n.excerpt}
                 </p>
                 <div className="mt-auto pt-4">
-                  <span className={`font-inter font-bold text-xs ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'} tracking-[0.2em] group-hover:translate-x-1 transition-transform uppercase inline-block mt-2`}>Read More →</span>
+                  <span className={`font-inter font-bold text-xs ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'} tracking-[0.2em] group-hover:translate-x-1 transition-transform uppercase inline-block mt-2`}>{t('updates.readMore')}</span>
                 </div>
               </div>
             </div>
           ))}
           {filteredNews.length === 0 && (
             <div className={`col-span-full py-20 text-center font-inter ${isLight ? 'text-[#8B6040]' : 'text-p-muted'}`}>
-              No updates found for this category yet.
+              {t('updates.noUpdates')}
             </div>
           )}
         </div>

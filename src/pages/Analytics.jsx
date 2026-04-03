@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const milestones = [
   { emoji: '🎬', value: 'PROJECT ANNOUNCED', label: 'RC16 Official', desc: 'Buchi Babu Sana and Ram Charan confirm collaboration.', date: 'MAR 2024' },
@@ -76,6 +77,7 @@ export default function Analytics() {
   const [liveCount, setLiveCount] = useState(847234);
   const timelineRef = useRef(null);
   const [lineHeight, setLineHeight] = useState(0);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -106,21 +108,21 @@ export default function Analytics() {
       {/* LIVE COUNTER */}
       <section className="relative py-20 px-6 text-center border-b border-[#FF9D00]/10 overflow-hidden z-10">
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
-        <h1 className="font-dirt font-black text-3xl uppercase tracking-[0.15em] mb-6 hero-text-gradient">LIVE FAN REACH</h1>
+        <h1 className="font-dirt font-black text-3xl uppercase tracking-[0.15em] mb-6 hero-text-gradient">{t('analytics.liveFanReach')}</h1>
         <div className="font-dirt font-black text-7xl md:text-9xl text-p-gold leading-none" style={{ textShadow: '0 0 60px rgba(255,157,0,0.5)' }}>
           {liveCount.toLocaleString()}
         </div>
-        <p className="font-inter text-xs tracking-[0.4em] text-p-muted mt-4 uppercase">FANS WORLDWIDE</p>
+        <p className="font-inter text-xs tracking-[0.4em] text-p-muted mt-4 uppercase">{t('analytics.fansWorldwide')}</p>
         
         <div className="mt-8 flex items-center justify-center gap-2">
           <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse2"></div>
-          <span className="font-inter font-black text-xs text-emerald-400 tracking-widest uppercase">LIVE</span>
+          <span className="font-inter font-black text-xs text-emerald-400 tracking-widest uppercase">{t('analytics.live')}</span>
         </div>
       </section>
 
       {/* MILESTONES TIMELINE */}
       <section className="py-20 px-6 max-w-4xl mx-auto relative text-center md:text-left text-white">
-        <h2 className="font-dirt font-black text-4xl hero-text-gradient text-center mb-16 uppercase tracking-[0.1em]">RECORDS BROKEN</h2>
+        <h2 className="font-dirt font-black text-4xl hero-text-gradient text-center mb-16 uppercase tracking-[0.1em]">{t('analytics.recordsBroken')}</h2>
         
         <div className="relative" ref={timelineRef}>
           {/* Center Line Background */}
@@ -153,7 +155,7 @@ export default function Analytics() {
 
       {/* BAR CHART SECTION */}
       <section className="py-20 px-6 max-w-3xl mx-auto">
-        <h2 className="font-dirt font-black text-3xl text-p-gold text-center mb-12 uppercase tracking-[0.1em]">CHIKIRI VIEWS BY LANGUAGE</h2>
+        <h2 className="font-dirt font-black text-3xl text-p-gold text-center mb-12 uppercase tracking-[0.1em]">{t('analytics.chikiriViews')}</h2>
         <div className="space-y-6">
           {bars.map(b => (
             <AnimatedBar key={b.lang} item={b} maxViews={maxViews} />

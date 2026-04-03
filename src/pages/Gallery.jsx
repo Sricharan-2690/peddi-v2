@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Expand, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const images = [
   {id:1, src:'/images/Peddi001.jpg', category:'Posters', label:'Ram Charan First Look'},
@@ -17,12 +18,20 @@ const images = [
   {id:13, src:'/images/et00439772-usfbnptffh-landscape.avif', category:'Stills', label:'Hero bg'},
 ];
 
-const filters = ['All', 'Posters', 'Stills', 'BTS', 'Locations'];
-
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
+
+  // Filter keys and their translation keys
+  const filters = [
+    { key: 'All', label: t('filter.all') },
+    { key: 'Posters', label: t('gallery.posters') },
+    { key: 'Stills', label: t('gallery.stills') },
+    { key: 'BTS', label: t('gallery.bts') },
+    { key: 'Locations', label: t('gallery.locations') },
+  ];
 
   // Computed based on filtered items
   const filtered = activeFilter === 'All' ? images : images.filter(img => img.category === activeFilter);
@@ -60,8 +69,8 @@ export default function Gallery() {
       <section className="relative h-[30vh] flex items-end justify-center pb-10 pt-24 text-center overflow-hidden">
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
         <div className="z-10">
-          <h1 className="font-dirt font-black text-5xl uppercase tracking-[0.15em] hero-text-gradient">GALLERY</h1>
-          <p className="font-inter font-bold text-xs tracking-[0.4em] text-p-muted mt-3 uppercase">VISUALS OF VIZIANAGARAM</p>
+          <h1 className="font-dirt font-black text-5xl uppercase tracking-[0.15em] hero-text-gradient">{t('gallery.title')}</h1>
+          <p className="font-inter font-bold text-xs tracking-[0.4em] text-p-muted mt-3 uppercase">{t('gallery.subtitle')}</p>
         </div>
       </section>
 
@@ -70,12 +79,12 @@ export default function Gallery() {
         <div className="flex gap-0 min-w-max md:justify-center">
           {filters.map(tab => (
             <button
-              key={tab}
-              onClick={() => setActiveFilter(tab)}
+              key={tab.key}
+              onClick={() => setActiveFilter(tab.key)}
               className={`font-inter font-black text-xs tracking-widest px-5 py-4 cursor-pointer focus:outline-none transition-colors duration-200 uppercase whitespace-nowrap border-b-2
-                ${activeFilter === tab ? 'text-p-gold border-p-gold' : 'text-p-muted hover:text-p-gold border-transparent'}`}
+                ${activeFilter === tab.key ? 'text-p-gold border-p-gold' : 'text-p-muted hover:text-p-gold border-transparent'}`}
             >
-              {tab}
+              {tab.label}
             </button>
           ))}
         </div>
