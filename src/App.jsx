@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { ThemeProvider } from './context/ThemeContext'
 import LoadingScreen from './components/LoadingScreen'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
+import ParticlesBackground from './components/ParticlesBackground'
 import Home from './pages/Home'
 import CastCrew from './pages/CastCrew'
 import Music from './pages/Music'
@@ -11,6 +13,20 @@ import Updates from './pages/Updates'
 import Gallery from './pages/Gallery'
 import Tickets from './pages/Tickets'
 import Analytics from './pages/Analytics'
+import SoundToggle from './components/SoundToggle'
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   const [loading, setLoading] = useState(true)
@@ -22,13 +38,16 @@ export default function App() {
   }
 
   return (
+    <ThemeProvider>
     <BrowserRouter>
+      <ScrollToTop />
       {loading && <LoadingScreen onDone={handleLoadingDone} />}
       <div
-        className="transition-opacity duration-500 min-h-screen flex flex-col relative"
+        className="transition-opacity duration-500 min-h-screen flex flex-col relative text-white"
         style={{ opacity: appVisible ? 1 : 0 }}
       >
-        <div className="grain-overlay" />
+        <ParticlesBackground />
+        <SoundToggle />
         <ScrollProgress />
         <Navbar />
         <main className="flex-1 w-full">
@@ -45,5 +64,6 @@ export default function App() {
         <Footer />
       </div>
     </BrowserRouter>
+    </ThemeProvider>
   )
 }

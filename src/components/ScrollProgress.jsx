@@ -24,7 +24,7 @@ export default function ScrollProgress() {
         top: 0,
         left: 0,
         height: '2px',
-        background: '#D4AF37',
+        background: '#FF9D00',
         zIndex: 9998,
         transition: 'width 50ms linear',
         width: `${width}%`

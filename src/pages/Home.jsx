@@ -1,67 +1,119 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, Play, Pause } from 'lucide-react';
-import languages from '../data/languages';
+import { Play, Ticket, ChevronDown } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import castData from '../data/castData';
 import newsData from '../data/newsData';
 
-const StatCounter = ({ stat }) => {
+function AnimatedStat({ value, label, suffix = "", duration = 2000 }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
   
   useEffect(() => {
-    const observer = new IntersectionObserver(([ent]) => {
-      if (ent.isIntersecting) {
-        let start = Date.now();
-        const duration = 2000;
-        let animationFrameId;
-        
-        const animate = () => {
-          let p = (Date.now() - start) / duration;
-          if (p >= 1) {
-            setCount(stat.value);
-            return;
-          }
-          const ease = 1 - Math.pow(2, -10 * p);
-          setCount(Math.floor(stat.value * ease));
-          animationFrameId = requestAnimationFrame(animate);
-        };
-        
-        animationFrameId = requestAnimationFrame(animate);
-        observer.disconnect();
-      }
-    }, { threshold: 0.5 });
-    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          let startTimer = null;
+          const step = (timestamp) => {
+            if (!startTimer) startTimer = timestamp;
+            const progress = Math.min((timestamp - startTimer) / duration, 1);
+            const easeOutProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+            setCount(Math.floor(easeOutProgress * value));
+            if (progress < 1) {
+              window.requestAnimationFrame(step);
+            } else {
+              setCount(value);
+            }
+          };
+          window.requestAnimationFrame(step);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [stat.value]);
+  }, [value, duration]);
 
   return (
-    <div ref={ref} className="bg-p-black py-10 px-6 text-center h-full flex flex-col justify-center items-center">
-      <div>
-        <span className="font-oswald font-bold text-5xl text-p-gold">{count}</span>
-        <span className="font-oswald text-2xl text-p-golddk">{stat.suffix}</span>
-      </div>
-      <p className="font-noto text-xs text-p-muted mt-3 leading-relaxed max-w-xs mx-auto">{stat.label}</p>
-      <div className="gold-divider w-10 mt-4 mx-auto" />
+    <div ref={ref} className={`rounded-xl sm:rounded-2xl border ${isLight ? 'border-[#7A4A10]/20' : 'border-[#FF9D00]/40'} p-6 sm:p-8 flex flex-col items-center justify-center backdrop-blur-sm ${isLight ? 'bg-black/[0.03]' : 'bg-white/[0.02]'} group hover:bg-[#FF9D00]/5 transition-colors`}>
+      <span className={`font-mont font-black text-4xl sm:text-5xl lg:text-6xl tabular-nums ${isLight ? 'text-[#2A1505]' : 'text-white'} leading-none mb-3 group-hover:scale-110 transition-transform duration-500 flex items-baseline`} style={{ textShadow: isLight ? 'none' : '0 0 25px rgba(255,157,0,0.35)' }}>
+        {count}{suffix}
+      </span>
+      <span className={`font-inter text-[9px] sm:text-[10px] font-black tracking-[0.2em] uppercase ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} opacity-70`}>{label}</span>
     </div>
   );
-};
+}
 
 export default function Home() {
-  // Rotate language
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [updatesCategory, setUpdatesCategory] = useState('All');
+  const { theme } = useTheme();
+  const isLight = theme === 'light';
+
+  const titleImages = [
+    '/images/title card in all langueges/English Title.png',
+    '/images/title card in all langueges/Telugu Title.png',
+    '/images/title card in all langueges/Hindi Title.png',
+    '/images/title card in all langueges/Tamil Title.png',
+    '/images/title card in all langueges/Kannada Title.png',
+    '/images/title card in all langueges/Malayalam Title.png',
+  ];
+  const [titleIdx, setTitleIdx] = useState(0);
+
+  // Drag-to-Scroll Slider Handlers
+  const sliderRef = useRef(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftPos, setScrollLeftPos] = useState(0);
+  const [activeCastIdx, setActiveCastIdx] = useState(0);
+
+  const handleCastScroll = () => {
+    if(sliderRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+      if (scrollWidth <= clientWidth) return;
+      // Calculate progress and convert it to current index (0 to 4)
+      const progress = scrollLeft / (scrollWidth - clientWidth);
+      const index = Math.round(progress * 4);
+      setActiveCastIdx(Math.max(0, Math.min(4, index)));
+    }
+  };
+
+  const handleMouseDown = (e) => {
+    setIsDown(true);
+    if(sliderRef.current) {
+      sliderRef.current.classList.remove('snap-mandatory'); // Disable snapping while dragging for smoothness
+      setStartX(e.pageX - sliderRef.current.offsetLeft);
+      setScrollLeftPos(sliderRef.current.scrollLeft);
+    }
+  };
+  const handleMouseLeave = () => { setIsDown(false); if(sliderRef.current) sliderRef.current.classList.add('snap-mandatory'); };
+  const handleMouseUp = () => { setIsDown(false); if(sliderRef.current) sliderRef.current.classList.add('snap-mandatory'); };
+  const handleMouseMove = (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    if(sliderRef.current) {
+      const x = e.pageX - sliderRef.current.offsetLeft;
+      const walk = (x - startX) * 2;
+      sliderRef.current.scrollLeft = scrollLeftPos - walk;
+    }
+  };
+
   useEffect(() => {
-    const int = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % languages.length);
-    }, 2800);
-    return () => clearInterval(int);
+    const titleInterval = setInterval(() => {
+      setTitleIdx(prev => (prev + 1) % titleImages.length);
+    }, 2000);
+    return () => clearInterval(titleInterval);
   }, []);
 
-  // Countdown timer
+  // Countdown State
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
+
   useEffect(() => {
-    const target = new Date('2026-04-30T00:30:00+05:30').getTime();
+    // 30 APRIL 2026
+    const target = new Date('2026-04-30T00:00:00+05:30').getTime();
     const interval = setInterval(() => {
       const now = new Date().getTime();
       const diff = target - now;
@@ -77,257 +129,263 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Stats Counter
-  const stats = [
-    { value: 46, suffix: 'M', label: 'Chikiri Views in 24 Hours' },
-    { value: 300, suffix: 'CR+', label: 'Estimated Budget (₹)' },
-    { value: 1000, suffix: '+', label: 'Dancers in Chikiri Song' },
-    { value: 8, suffix: ' MONTHS', label: "Ram Charan's Training" },
-    { value: 130, suffix: 'CR', label: 'Netflix OTT Deal (₹)' },
-    { value: 5, suffix: '', label: 'Pan-India Languages' },
-  ];
-  
+  // initial loading animation 2s
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
-
-  // Music Player
-  const [bgImageError, setBgImageError] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
-  
-  const bars = useMemo(() => Array.from({length:40}, () => ({
-    height: Math.random() * 36 + 8,
-    dur: (Math.random() * 0.8 + 0.4).toFixed(2),
-    delay: (Math.random() * 0.5).toFixed(2),
-  })), []);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) audioRef.current.pause();
-      else audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
+  // Premium Tokens based on reference image
+  const themeClasses = {
+    bgApp: 'hero-bg',
+    cardBg: 'hero-glass-card',
+    cardHover: isLight ? 'hover:bg-black/5' : 'hover:bg-white/5',
+    border: isLight ? 'border-[#7A4A10]/20' : 'border-[#FF9D00]/20',
+    textMuted: isLight ? 'text-[#8B6040]' : 'text-zinc-400',
+    btnPrimary: 'hero-btn-primary',
+    btnSecondary: 'hero-btn-secondary',
+    goldText: 'hero-text-gradient'
   };
 
+  if (loading) {
+    return (
+      <div className="fixed inset-0 bg-p-black z-50 flex items-center justify-center">
+        {/* Mock video loader */}
+        <video className="absolute inset-0 w-full h-full object-cover opacity-30" autoPlay loop muted playsInline>
+          <source src="/videos/hero-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="relative z-10 flex flex-col items-center animate-pulse">
+           <div className="w-12 h-12 border-4 border-p-amber border-t-transparent rounded-full animate-spin shadow-[0_0_15px_rgba(255,157,0,0.5)]"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full">
-      {/* SECTION 1 — HERO */}
-      <section className="min-h-screen relative overflow-hidden bg-p-black">
-        {!bgImageError ? (
-          <img src="/images/et00439772-usfbnptffh-landscape.avif" onError={() => setBgImageError(true)} alt="" className="absolute inset-0 w-full h-full object-cover opacity-40" />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-p-dark via-p-black to-p-rust opacity-80" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-p-black/50 to-p-black" />
+    <div className={`min-h-screen font-inter transition-colors duration-500 flex flex-col pt-16 ${themeClasses.bgApp} selection:bg-p-amber/30`}>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-20 px-6 pt-24 text-center z-10">
-          <div className="h-56 md:h-[20rem] flex items-center justify-center w-full py-4">
-             <div key={currentIndex} className="animate-fade-up flex items-center justify-center w-full h-full">
-               <h2 className={`${languages[currentIndex].font} text-8xl md:text-[10rem] font-bold text-p-gold leading-normal pb-4`} style={{ textShadow:'0 0 60px rgba(212,175,55,0.25)' }}>
-                 {languages[currentIndex].script}
-               </h2>
-             </div>
-          </div>
-
-          <div className="gold-divider" />
-
-          <p className="font-oswald text-xs tracking-[0.3em] text-p-muted uppercase">
-            {languages[currentIndex].lang}
-          </p>
-
-          <h1 className="font-cinzel text-xl text-p-muted/60 tracking-[0.5em] mt-4">PEDDI</h1>
-          <p className="font-noto text-sm italic text-p-muted/50 mt-1">A Rural Legend. A Village's Pride.</p>
-
-          <div className="flex gap-3 justify-center items-center my-4 flex-wrap">
-             <span className="border border-p-gold/40 rounded px-4 py-1.5 font-oswald text-xs tracking-widest text-p-gold">
-               IN CINEMAS — APRIL 30, 2026
-             </span>
-             <span className="bg-p-gold text-p-black font-oswald font-bold text-xs tracking-widest px-3 py-1.5 rounded">
-               DOLBY CINEMA
-             </span>
-          </div>
-
-          <div className="flex gap-4 justify-center flex-wrap mt-6">
-             <Link to="/tickets" className="flex items-center gap-2 shimmer-btn bg-p-gold text-p-black font-oswald font-bold text-sm tracking-widest px-8 py-4 rounded-full hover:bg-p-goldlt hover:scale-105 hover:-translate-y-1 active:scale-95 transition-all duration-200 shadow-lg hover:shadow-p-gold/30">
-               <span>🎟</span> BOOK TICKETS NOW
-             </Link>
-             <button onClick={() => window.open('https://youtube.com', '_blank')} className="flex items-center gap-2 border border-p-gold text-p-gold font-oswald font-bold text-sm tracking-widest px-8 py-4 rounded-full hover:bg-p-gold/10 hover:-translate-y-1 transition-all duration-200">
-               <span>▶</span> WATCH TRAILER
-             </button>
-          </div>
-
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center">
-            <ChevronDown size={24} className="text-p-gold animate-bounce2" />
-            <span className="font-oswald text-xs tracking-[0.4em] text-p-gold/40 mt-1">SCROLL</span>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2 — COUNTDOWN TIMER */}
-      <section className="bg-p-dark border-y border-p-gold/10 py-16 text-center px-4">
-        <p className="font-oswald text-xs tracking-[0.4em] text-p-muted">COUNTING DOWN TO</p>
-        <h2 className="font-cinzel text-xl text-p-gold mt-2 mb-8">PEDDI IN CINEMAS</h2>
+      {/* Hero Section */}
+      <section className="relative min-h-[100dvh] flex flex-col justify-center items-center text-center px-4 pt-20 pb-10 overflow-hidden">
+        {/* Glow effect */}
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px] rounded-full pointer-events-none -z-10 ${!isLight ? 'bg-p-amber/10 blur-[100px]' : 'bg-p-amber/5 blur-[80px]'}`}></div>
         
-        <div className="flex gap-2 sm:gap-4 justify-center flex-wrap">
-          {Object.entries(timeLeft).map(([unit, value], i, arr) => (
-            <React.Fragment key={unit}>
-              <div className="w-20 h-24 sm:w-24 sm:h-28 md:w-28 md:h-32 relative flex flex-col items-center">
-                <div className="w-full h-16 sm:h-20 md:h-24 bg-gradient-to-b from-p-rust to-p-dark border border-p-gold/20 rounded-lg flex items-center justify-center relative shadow-xl">
-                  <span className="font-oswald font-bold text-4xl sm:text-5xl md:text-6xl text-p-gold">{value.toString().padStart(2, '0')}</span>
-                  <div className="absolute w-full h-px bg-black/50 top-1/2 left-0" />
-                </div>
-                <span className="font-oswald text-[10px] sm:text-xs tracking-[0.3em] text-p-muted mt-2 uppercase">{unit}</span>
-              </div>
-              {i < arr.length - 1 && (
-                <span className="font-oswald text-2xl sm:text-3xl text-p-gold/40 self-start mt-4 sm:mt-6 mx-0 sm:mx-1 animate-pulse2">:</span>
-              )}
-            </React.Fragment>
-          ))}
+        <div className="z-10 flex flex-col items-center w-full max-w-4xl mx-auto mt-6">
+            <div className={`font-mont font-normal text-sm sm:text-base tracking-[0.4em] uppercase mb-8 sm:mb-10 text-center ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} drop-shadow-[0_0_6px_rgba(255,157,0,0.7)] leading-relaxed -translate-y-4`}>
+               Mega Power Star <br/> Ram Charan
+            </div>
+            
+            {/* Title Slideshow replacing PEDDI text */}
+            <div 
+               className="relative w-full max-w-[80vw] sm:max-w-[60vw] md:max-w-[500px] h-32 sm:h-40 md:h-48 overflow-hidden mb-4 sm:mb-6 flex justify-center items-center"
+            >
+               {titleImages.map((src, idx) => {
+                 let transformClass = 'translate-y-[100%] opacity-0';
+                 if (idx === titleIdx) {
+                   transformClass = 'translate-y-0 opacity-100 z-10';
+                 } else if (idx === (titleIdx - 1 + titleImages.length) % titleImages.length) {
+                   transformClass = '-translate-y-[100%] opacity-0';
+                 }
+                 
+                 return (
+                   <img
+                     key={src}
+                     src={src}
+                     alt="Peddi Title"
+                     className={`absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${transformClass} drop-shadow-[0_0_15px_rgba(255,157,0,0.4)]`}
+                   />
+                 );
+               })}
+            </div>
+            
+            <h2 className={`font-mont font-semibold text-sm sm:text-lg md:text-xl tracking-[0.4em] uppercase mb-10 ${isLight ? 'text-[#2A1505]' : 'text-white'} drop-shadow-md`}>
+               THE RAGE BEGINS
+            </h2>
+
+            <div className="mb-10 sm:mb-12 flex flex-col items-center">
+               <span className="mb-4 sm:mb-5 bg-gradient-to-r from-[#FFB733] to-[#FF9D00] text-white font-inter font-black text-[9px] sm:text-[10px] tracking-widest px-5 py-2 rounded-full uppercase shadow-[0_0_15px_rgba(255,157,0,0.4)]">
+                 WORLDWIDE THEATRICAL RELEASE
+               </span>
+               <h2 className="font-mont font-black text-4xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFB733] to-[#FF9D00] uppercase tracking-tight drop-shadow-[0_0_15px_rgba(255,157,0,0.4)] transition-all">
+                 APRIL 30, 2026
+               </h2>
+            </div>
+
+            {/* Countdown */}
+            <div className="mb-10 sm:mb-12 flex justify-center items-center gap-1.5 sm:gap-5 w-full max-w-2xl px-2">
+               {Object.entries(timeLeft).map(([unit, value], idx, arr) => (
+                  <React.Fragment key={unit}>
+                    <div className="flex flex-col items-center">
+                       {/* Digit card — thin orange border, transparent bg */}
+                       <div className={`rounded-lg sm:rounded-2xl border ${isLight ? 'border-[#7A4A10]/30' : 'border-[#FF9D00]/40'} px-2 sm:px-5 py-2 sm:py-4 min-w-[44px] sm:min-w-[72px] flex items-center justify-center backdrop-blur-sm ${isLight ? 'bg-black/[0.04]' : 'bg-white/[0.02]'}`}>
+                          <span 
+                            className={`font-mont font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl tabular-nums ${isLight ? 'text-[#2A1505]' : 'text-white'} leading-none`}
+                            style={{ textShadow: isLight ? 'none' : '0 0 25px rgba(255,157,0,0.35)' }}
+                          >
+                            {value.toString().padStart(2, '0')}
+                          </span>
+                       </div>
+                       <span className={`font-inter text-[8px] sm:text-[10px] font-black tracking-[0.2em] uppercase mt-2 sm:mt-3 ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} opacity-60`}>{unit}</span>
+                    </div>
+                    
+                    {idx < arr.length - 1 && (
+                      <div className="flex flex-col gap-1 sm:gap-1.5 mb-4 sm:mb-6">
+                         <div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full ${isLight ? 'bg-[#7A4A10]' : 'bg-[#FF9D00]'} opacity-40`} />
+                         <div className={`w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full ${isLight ? 'bg-[#7A4A10]' : 'bg-[#FF9D00]'} opacity-40`} />
+                      </div>
+                    )}
+                  </React.Fragment>
+               ))}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
+               <a href="https://in.bookmyshow.com/movies/hyderabad/peddi/ET00439772" target="_blank" rel="noopener noreferrer"
+                  className={`w-full sm:w-[200px] h-14 rounded-full flex items-center justify-center gap-2 font-inter tracking-[0.2em] text-xs font-black transition-all duration-300 ${themeClasses.btnPrimary}`}>
+                  <Ticket size={16} /> BOOK TICKETS
+               </a>
+               <a href="https://youtu.be/f4poVE-r8Ho?si=7_SjSUZaXbTNAhD1" target="_blank" rel="noopener noreferrer"
+                  className={`w-full sm:w-[200px] h-14 rounded-full flex items-center justify-center gap-2 font-inter tracking-[0.2em] text-xs font-black transition-all duration-300 hero-btn-secondary`}>
+                  <Play size={16} fill="currentColor" /> WATCH TRAILER
+               </a>
+            </div>
+        </div>
+        
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+           <ChevronDown size={24} className={themeClasses.textMuted} />
         </div>
       </section>
 
-      {/* SECTION 3 — ABOUT THE FILM */}
-      <section className="bg-p-black py-24 px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          <div className="grid grid-cols-2 gap-4">
-            {[{v:'1980s', l:'Vizianagaram Setting'}, {v:'RC16', l:"Ram Charan's 16th Film"}, {v:'₹300Cr+', l:'Estimated Budget'}, {v:'OTT: Netflix', l:'Digital Rights Partner'}].map(item => (
-              <div key={item.v} className="bg-p-dark border border-p-gold/15 rounded-xl p-6 text-center md:text-left flex flex-col justify-center">
-                <span className="font-oswald text-2xl sm:text-3xl text-p-gold leading-tight">{item.v}</span>
-                <span className="font-noto text-xs text-p-muted mt-1">{item.l}</span>
-              </div>
-            ))}
-          </div>
-          <div>
-            <p className="font-oswald text-xs tracking-[0.4em] text-p-muted uppercase">ABOUT THE FILM</p>
-            <h2 className="font-cinzel text-4xl text-p-gold mt-2">The World of Peddi</h2>
-            <div className="gold-divider ml-0 w-20" />
-            <p className="font-noto text-base text-p-cream/80 leading-loose mt-6">
-              In 1980s Vizianagaram, a spirited village cricketer transforms into a pehelwan — a wrestler who unites his community through sport, sacrifice, and sheer will. Directed by National Award winner Buchi Babu Sana, PEDDI is a rural, emotional, and rustic journey into the heart of Andhra Pradesh. Music by the legendary AR Rahman.
+      {/* Overview Section */}
+      <section className={`py-12 sm:py-16 px-6`}>
+         <div className="max-w-4xl mx-auto text-center">
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-6 ${themeClasses.goldText}`}>OVERVIEW</h3>
+            <p className={`font-inter text-base sm:text-lg md:text-xl leading-relaxed font-light ${themeClasses.textMuted}`}>
+               Peddi is an upcoming Indian Telugu-language sports action drama film written and directed by Buchi Babu Sana. The film stars Ram Charan as the titular role, alongside Janhvi Kapoor, Shiva Rajkumar, Jagapathi Babu and Divyenndu. 
+               <br/><br/>
+               Set in 1980s Vizianagaram, it follows a spirited village cricketer who transforms into a pehelwan — a wrestler who unites his community through sport, sacrifice, and sheer will.
             </p>
-            <p className="font-oswald text-xs tracking-[0.3em] text-p-gold/50 mt-8">A BUCHI BABU SANA FILM</p>
-          </div>
-        </div>
+         </div>
       </section>
 
-      {/* SECTION 4 — STATS COUNTERS */}
-      <section className="bg-p-dark py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-cinzel text-4xl text-p-gold text-center">BY THE NUMBERS</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-p-gold/5 mt-12 rounded-xl overflow-hidden border border-p-gold/10">
-            {stats.map(s => <StatCounter key={s.label} stat={s} />)}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 5 — MUSIC TEASER */}
-      <section className="bg-p-black py-20 px-6 text-center">
-        <p className="font-oswald text-xs tracking-[0.4em] text-p-muted">MUSIC BY</p>
-        <h2 className="font-cinzel text-5xl md:text-6xl text-p-gold mt-2">A.R. RAHMAN</h2>
-        <div className="flex gap-2 sm:gap-4 justify-center flex-wrap mt-4">
-          {['Oscar Winner', 'Golden Globe', 'National Award'].map(b => (
-            <span key={b} className="border border-p-gold/30 rounded-full px-4 py-1 text-xs font-oswald text-p-gold uppercase">{b}</span>
-          ))}
-        </div>
-
-        <div className="bg-p-dark border border-p-gold/20 rounded-2xl p-6 sm:p-8 mt-10 max-w-2xl mx-auto shadow-2xl">
-          <span className="bg-p-gold text-p-black text-xs font-oswald font-bold px-3 py-1 rounded-full uppercase">🏆 ALL-TIME RECORD</span>
-          <h3 className="font-cinzel text-3xl text-p-gold mt-4">CHIKIRI CHIKIRI</h3>
-          <p className="font-noto text-sm text-p-muted mt-1">46 Million Views in 24 Hours</p>
-          
-          <div className="flex gap-0.5 items-end justify-center h-12 mt-6 overflow-hidden max-w-full">
-            {bars.map((bar, i) => (
-              <div 
-                key={i} 
-                className="w-1 rounded-sm bg-p-gold/70"
-                style={{
-                  height: `${bar.height}px`,
-                  animation: `waveBar ${bar.dur}s ease-in-out infinite`,
-                  animationDelay: `${bar.delay}s`,
-                  animationPlayState: isPlaying ? 'running' : 'paused'
-                }}
-              />
-            ))}
-          </div>
-          
-          <button onClick={togglePlay} className="w-14 h-14 bg-p-gold rounded-full flex items-center justify-center mx-auto mt-6 hover:scale-105 active:scale-95 transition-transform duration-200 focus:outline-none focus:ring-4 focus:ring-p-gold/20">
-            {isPlaying ? <Pause size={24} className="text-p-black fill-current" /> : <Play size={24} className="text-p-black fill-current ml-1" />}
-          </button>
-          
-          {/* Silent audio track for demo */}
-          <audio ref={audioRef} src="/audios/Chikiri Chikiri.mp3" loop onEnded={() => setIsPlaying(false)} onError={() => { /* fallback gracefully handled via state toggle */ }} />
-
-          <div className="mt-8">
-            <Link to="/music" className="inline-block border border-p-gold/40 text-p-gold rounded-full px-6 py-2 font-oswald text-xs tracking-widest hover:bg-p-gold/10 transition-colors uppercase">
-              EXPLORE FULL SOUNDTRACK →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 6 — CAST PREVIEW */}
-      <section className="bg-p-dark py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-cinzel text-4xl text-p-gold text-center">MAIN CAST</h2>
-          <div className="gold-divider" />
-          
-          <div className="flex gap-6 overflow-x-auto md:grid md:grid-cols-3 pb-4 md:pb-0 scrollbar-none mt-12">
-            {castData.slice(0, 3).map(member => (
-              <div key={member.id} className="w-64 md:w-auto flex-shrink-0 bg-p-black border border-p-gold/15 rounded-xl overflow-hidden group">
-                <div className="h-80 w-full overflow-hidden">
-                  <img src={member.image} onError={e => e.target.src = member.fallback} alt={member.actor} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
-                <div className="p-4 bg-p-black relative z-10">
-                  <h3 className="font-cinzel text-lg text-p-gold">{member.actor}</h3>
-                  <p className="font-noto text-sm italic text-p-muted mt-0.5">as {member.character}</p>
-                  <p className="font-noto text-xs text-p-cream/60 leading-relaxed mt-3" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {member.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link to="/cast" className="inline-block font-oswald text-sm text-p-gold tracking-widest hover:text-p-goldlt transition-colors underline underline-offset-4 decoration-p-gold/30 hover:decoration-p-gold">
-              SEE FULL CAST →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 7 — UPDATES PREVIEW */}
-      <section className="bg-p-black py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="font-cinzel text-4xl text-p-gold text-center">LATEST UPDATES</h2>
-          <div className="gold-divider" />
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            {newsData.slice(0, 3).map(n => (
-              <Link to="/updates" key={n.id} className="bg-p-dark border border-p-gold/10 rounded-xl overflow-hidden hover:-translate-y-1 hover:border-l-2 hover:border-l-p-gold hover:shadow-xl hover:shadow-black/50 transition-all duration-200 group block">
-                <div className="h-48 w-full relative overflow-hidden">
-                  <img src={n.image} alt={n.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute top-3 left-3">
-                    <span className={`font-oswald text-xs px-3 py-1 rounded-full uppercase ${n.category === 'Announcement' ? 'bg-p-gold text-p-black font-bold' : n.category === 'BTS' ? 'bg-p-red/80 text-white' : 'bg-p-gold/20 text-p-gold border border-p-gold/40'}`}>
-                      {n.category}
-                    </span>
+      {/* Updates Section */}
+      <section className={`py-12 sm:py-16 px-6 ${themeClasses.bgApp}`}>
+         <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row justify-between items-center md:items-end mb-12 sm:mb-16 gap-6">
+               <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center sm:text-left ${themeClasses.goldText}`}>LATEST UPDATES</h3>
+               
+               {/* Desktop Category Menu inside updates */}
+               <div className="hidden sm:flex gap-4 sm:gap-6 text-xs font-inter font-bold tracking-[0.1em] uppercase">
+                  {['All', 'Trailers', 'Songs', 'Reels'].map(cat => (
+                     <button key={cat} onClick={() => setUpdatesCategory(cat)} className={`pb-1 border-b-2 transition-colors ${updatesCategory === cat ? 'border-p-amber text-p-amber' : 'border-transparent ' + themeClasses.textMuted}`}>
+                        {cat}
+                     </button>
+                  ))}
+               </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16">
+               {newsData.slice(0, 2).map((n) => (
+                  <div key={n.id} className={`group rounded-[2rem] overflow-hidden ${themeClasses.cardBg} border ${themeClasses.border} transition-transform duration-500 hover:-translate-y-2 flex flex-col shadow-lg`}>
+                     <div className="aspect-[16/9] w-full overflow-hidden relative">
+                        <img src={n.image} alt={n.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0 grayscale-[20%]" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-p-black via-transparent to-transparent opacity-80"></div>
+                     </div>
+                     <div className="p-8 flex flex-col flex-grow relative z-10">
+                        <span className={`text-[10px] font-inter font-bold tracking-widest uppercase ${themeClasses.textMuted} mb-2 block`}>{n.date} • {n.category}</span>
+                        <h4 className={`font-mont font-bold text-xl sm:text-2xl mb-4 leading-snug uppercase ${isLight ? 'text-[#2A1505]' : 'text-white'}`}>{n.title}</h4>
+                        <p className={`text-sm sm:text-base font-inter ${themeClasses.textMuted} leading-relaxed flex-grow`}>{n.excerpt}</p>
+                     </div>
                   </div>
-                </div>
-                <div className="p-5 flex flex-col h-[calc(100%-12rem)]">
-                  <span className="font-oswald text-xs text-p-muted/60 tracking-wider uppercase">{n.date}</span>
-                  <h3 className="font-cinzel text-lg text-p-gold mt-2 leading-snug">{n.title}</h3>
-                  <p className="font-noto text-xs text-p-muted leading-relaxed mt-2 flex-grow" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {n.excerpt}
-                  </p>
-                  <span className="font-oswald text-xs text-p-gold tracking-wide mt-4 group-hover:translate-x-1 transition-transform uppercase inline-block font-bold">Read More →</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link to="/updates" className="inline-block shimmer-btn bg-p-gold text-p-black font-oswald font-bold text-xs tracking-widest px-8 py-3 rounded-full hover:bg-p-goldlt hover:scale-105 active:scale-95 transition-all duration-200">
-              ALL UPDATES →
-            </Link>
-          </div>
-        </div>
+               ))}
+            </div>
+            
+            <div className="text-center">
+               <Link to="/updates" className={`inline-block px-10 py-4 rounded-full font-inter tracking-[0.2em] text-xs sm:text-sm font-black transition-all duration-300 hero-btn-secondary`}>
+                  VIEW ALL UPDATES
+               </Link>
+            </div>
+         </div>
       </section>
+
+      {/* Cast Section */}
+      <section className={`py-24 sm:py-32 px-6 ${themeClasses.cardBg}`}>
+         <div className="max-w-7xl mx-auto">
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center mb-16 ${themeClasses.goldText}`}>THE CAST</h3>
+            
+            <div 
+               ref={sliderRef}
+               onMouseDown={handleMouseDown}
+               onMouseLeave={handleMouseLeave}
+               onMouseUp={handleMouseUp}
+               onMouseMove={handleMouseMove}
+               onScroll={handleCastScroll}
+               className={`flex gap-4 sm:gap-6 overflow-x-auto pb-12 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 sm:mx-0 sm:px-0 scroll-smooth ${isDown ? 'cursor-grabbing' : 'cursor-grab'}`} 
+               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+               <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; }`}</style>
+               
+               {castData.slice(0, 5).map((member) => (
+                  <div key={member.id} className="min-w-[75vw] sm:min-w-[280px] md:min-w-[320px] snap-center group cursor-pointer">
+                     <div className={`relative overflow-hidden rounded-[2rem] aspect-[3/4] mb-6 ${!isLight ? 'bg-zinc-900 border border-white/5' : 'bg-gray-100 border border-black/5'} shadow-xl`}>
+                        <img src={member.image} onError={e => e.target.src=member.fallback} alt={member.actor} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 filter group-hover:brightness-110 grayscale-[30%] group-hover:grayscale-0" />
+                        
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500 flex flex-col justify-end p-6 md:p-8">
+                           <p className="text-white/90 font-inter text-xs md:text-sm font-medium leading-relaxed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 line-clamp-4">
+                             {member.description}
+                           </p>
+                        </div>
+                     </div>
+                     <div className="text-center px-4">
+                        <h4 className={`font-mont font-bold text-lg md:text-xl mb-1 uppercase tracking-wide ${isLight ? 'text-[#2A1505]' : 'text-white'}`}>{member.actor}</h4>
+                        <p className={`text-xs sm:text-sm font-inter font-semibold tracking-[0.2em] uppercase text-p-amber`}>as {member.character}</p>
+                     </div>
+                  </div>
+               ))}
+               
+            </div>
+            
+            {/* Scroll Indicator Dots */}
+            <div className="flex justify-center items-center gap-2 mt-2 mb-10 pointer-events-none transition-all duration-300">
+               {Array.from({ length: 5 }).map((_, idx) => (
+                 <div 
+                   key={idx} 
+                   className={`h-1.5 rounded-full transition-all duration-500 ease-out ${
+                     activeCastIdx === idx 
+                       ? 'w-6 bg-[#FF9D00] shadow-[0_0_8px_rgba(255,157,0,0.4)]' 
+                       : 'w-1.5 bg-white/20 hover:bg-white/40'
+                   }`}
+                 />
+               ))}
+            </div>
+
+            {/* View Full Cast Button */}
+            <div className="text-center">
+               <Link to="/cast" className={`inline-block px-10 py-4 rounded-full font-inter tracking-[0.2em] text-xs sm:text-sm font-black transition-all duration-300 hero-btn-secondary`}>
+                  VIEW FULL CAST
+               </Link>
+            </div>
+         </div>
+      </section>
+
+      {/* Records & Analytics Section */}
+      <section className={`py-24 sm:py-32 px-6 text-center ${themeClasses.bgApp} border-t ${themeClasses.border}`}>
+         <div className="max-w-5xl mx-auto">
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-16 ${themeClasses.goldText}`}>RECORDS & IMPACT</h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
+               <AnimatedStat value={46} suffix="M" label="Views (24h)" duration={2500} />
+               <AnimatedStat value={5} label="Languages" duration={1500} />
+               <AnimatedStat value={130} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label="Netflix Deal" duration={3000} />
+               <AnimatedStat value={300} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label="Est. Budget" duration={3500} />
+            </div>
+            
+            <Link to="/analytics" className={`inline-block px-10 py-4 rounded-full font-inter tracking-[0.2em] text-xs sm:text-sm font-black transition-all duration-300 hero-btn-secondary`}>
+               VIEW ALL ANALYTICS
+            </Link>
+         </div>
+      </section>
+      
+
     </div>
   );
 }

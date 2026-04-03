@@ -55,23 +55,24 @@ export default function Gallery() {
   }, [activeFilter]);
 
   return (
-    <div className="w-full bg-p-black min-h-screen">
+    <div className="w-full hero-bg min-h-screen">
       {/* HERO */}
-      <section className="h-[30vh] bg-gradient-to-b from-p-rust via-p-dark to-p-black flex items-end justify-center pb-10 pt-24 text-center">
-        <div>
-          <h1 className="font-cinzel text-5xl text-p-gold">GALLERY</h1>
-          <p className="font-oswald text-xs tracking-[0.4em] text-p-muted mt-3 uppercase">VISUALS OF VIZIANAGARAM</p>
+      <section className="relative h-[30vh] flex items-end justify-center pb-10 pt-24 text-center overflow-hidden">
+        <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
+        <div className="z-10">
+          <h1 className="font-dirt font-black text-5xl uppercase tracking-[0.15em] hero-text-gradient">GALLERY</h1>
+          <p className="font-inter font-bold text-xs tracking-[0.4em] text-p-muted mt-3 uppercase">VISUALS OF VIZIANAGARAM</p>
         </div>
       </section>
 
       {/* FILTER BAR */}
-      <div className="sticky top-[72px] z-30 bg-p-black/90 backdrop-blur border-b border-p-gold/10 overflow-x-auto w-full">
-        <div className="flex gap-0 min-w-max md:justify-center border-b border-p-gold/10">
+      <div className="sticky top-[64px] md:top-[80px] z-30 bg-black/80 backdrop-blur-md border-b border-[#FF9D00]/20 overflow-x-auto w-full">
+        <div className="flex gap-0 min-w-max md:justify-center">
           {filters.map(tab => (
             <button
               key={tab}
               onClick={() => setActiveFilter(tab)}
-              className={`font-oswald text-xs tracking-widest px-5 py-4 cursor-pointer focus:outline-none transition-colors duration-200 uppercase whitespace-nowrap border-b-2
+              className={`font-inter font-black text-xs tracking-widest px-5 py-4 cursor-pointer focus:outline-none transition-colors duration-200 uppercase whitespace-nowrap border-b-2
                 ${activeFilter === tab ? 'text-p-gold border-p-gold' : 'text-p-muted hover:text-p-gold border-transparent'}`}
             >
               {tab}
@@ -108,10 +109,10 @@ export default function Gallery() {
           </button>
           
           {/* Controls */}
-          <button className="absolute left-4 top-1/2 -translate-y-1/2 text-p-gold hover:scale-110 p-2 z-50 focus:outline-none" onClick={prevImage}>
+          <button className="absolute left-4 top-1/2 -translate-y-1/2 text-p-gold hover:text-p-goldlt hover:scale-110 p-2 z-50 focus:outline-none transition-all" onClick={prevImage}>
             <ChevronLeft size={36} />
           </button>
-          <button className="absolute right-4 top-1/2 -translate-y-1/2 text-p-gold hover:scale-110 p-2 z-50 focus:outline-none" onClick={nextImage}>
+          <button className="absolute right-4 top-1/2 -translate-y-1/2 text-p-gold hover:text-p-goldlt hover:scale-110 p-2 z-50 focus:outline-none transition-all" onClick={nextImage}>
             <ChevronRight size={36} />
           </button>
 

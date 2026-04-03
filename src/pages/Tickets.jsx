@@ -11,7 +11,7 @@ const platforms = [
   {name:'Fandango (USA)', url:'https://fandango.com'},
 ];
 
-// Reusable timer for TICKETS hero
+// Timer matching the Hero Section style
 const CompactTimer = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
   useEffect(() => {
@@ -32,14 +32,26 @@ const CompactTimer = () => {
   }, []);
 
   return (
-    <div className="flex gap-2 justify-center mt-10">
+    <div className="flex justify-center items-center gap-1 sm:gap-3 mt-8">
       {Object.entries(timeLeft).map(([unit, value], i, arr) => (
         <React.Fragment key={unit}>
-          <div className="w-16 h-20 bg-p-black border border-p-gold/20 rounded flex flex-col items-center justify-center">
-            <span className="font-oswald font-bold text-3xl text-p-gold leading-none">{value.toString().padStart(2, '0')}</span>
-            <span className="font-oswald text-[10px] tracking-widest text-p-muted mt-1 uppercase">{unit}</span>
+          <div className="flex flex-col items-center">
+            <div className="rounded-lg hero-border-amber px-2.5 py-2 min-w-[44px] sm:min-w-[56px] flex items-center justify-center hero-glass-card">
+              <span
+                className="font-dirt font-black text-xl sm:text-2xl tabular-nums text-white leading-none"
+                style={{ textShadow: '0 0 20px rgba(255,157,0,0.35)' }}
+              >
+                {value.toString().padStart(2, '0')}
+              </span>
+            </div>
+            <span className="font-inter text-[8px] font-black tracking-[0.15em] uppercase mt-1.5 text-[#FF9D00] opacity-60">{unit}</span>
           </div>
-          {i < arr.length - 1 && <span className="font-oswald text-2xl text-p-gold/40 mt-3 mx-1">:</span>}
+          {i < arr.length - 1 && (
+            <div className="flex flex-col gap-1 mb-4">
+              <div className="w-0.5 h-0.5 rounded-full bg-[#FF9D00] opacity-40" />
+              <div className="w-0.5 h-0.5 rounded-full bg-[#FF9D00] opacity-40" />
+            </div>
+          )}
         </React.Fragment>
       ))}
     </div>
@@ -48,37 +60,39 @@ const CompactTimer = () => {
 
 export default function Tickets() {
   return (
-    <div className="w-full bg-p-black min-h-screen">
+    <div className="w-full hero-bg min-h-screen">
       {/* HERO */}
-      <section className="min-h-[45vh] flex flex-col items-center justify-center bg-gradient-to-b from-p-dark to-p-black text-center px-6 pt-32 pb-16">
-        <h1 className="font-oswald font-bold text-6xl md:text-8xl text-p-gold uppercase tracking-tight" style={{ textShadow: '0 0 40px rgba(212,175,55,0.2)' }}>
-          APRIL 30, 2026
-        </h1>
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-6">
-          <span className="font-oswald text-xs tracking-widest text-p-muted uppercase border border-p-gold/30 px-4 py-1.5 rounded-full">
+      <section className="relative min-h-[50vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16 overflow-hidden">
+        <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
+        <div className="z-10 flex flex-col items-center justify-center">
+          <span className="mb-4 bg-gradient-to-r from-[#FFB733] to-[#FF9D00] text-white font-inter font-black text-[9px] sm:text-[10px] tracking-widest px-5 py-2 rounded-full uppercase shadow-[0_0_15px_rgba(255,157,0,0.4)]">
             WORLDWIDE THEATRICAL RELEASE
           </span>
-          <span className="bg-p-gold text-p-black font-oswald font-bold text-xs tracking-widest px-4 py-1.5 rounded-full uppercase">
-            DOLBY CINEMA
-          </span>
+          <h1
+            className="font-dirt font-black text-5xl md:text-7xl hero-text-gradient uppercase tracking-tight"
+          >
+            APRIL 30, 2026
+          </h1>
+          <CompactTimer />
         </div>
-        <CompactTimer />
       </section>
 
       {/* BOOKING PLATFORMS */}
       <section className="max-w-2xl mx-auto px-6 py-16">
-        <h2 className="font-cinzel text-3xl text-p-gold text-center">BOOK YOUR SEATS</h2>
+        <h2 className="font-dirt font-black text-2xl md:text-3xl uppercase tracking-[0.1em] hero-text-gradient text-center">
+          BOOK YOUR SEATS
+        </h2>
         <div className="gold-divider" />
-        
+
         <div className="mt-10 space-y-4">
           {platforms.map(p => (
-            <div 
+            <div
               key={p.name}
               onClick={() => window.open(p.url, '_blank')}
-              className="bg-p-dark border border-p-gold/20 rounded-xl p-5 flex justify-between items-center hover:bg-p-gold/5 hover:border-p-gold/50 hover:-translate-y-0.5 transition-all duration-200 cursor-pointer shadow-lg group"
+              className="hero-glass-card rounded-xl p-5 flex justify-between items-center hover:bg-white/[0.05] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer shadow-xl group"
             >
-              <h3 className="font-cinzel text-lg text-p-gold">{p.name}</h3>
-              <span className="font-oswald text-xs text-p-gold tracking-widest group-hover:translate-x-1 transition-transform uppercase font-bold">
+              <h3 className="font-dirt font-bold uppercase tracking-wide text-base text-p-gold">{p.name}</h3>
+              <span className="font-inter font-black text-xs text-[#FF9D00] tracking-[0.2em] group-hover:translate-x-1 transition-transform uppercase">
                 BOOK NOW →
               </span>
             </div>
@@ -88,10 +102,10 @@ export default function Tickets() {
 
       {/* LANGUAGE SECTION */}
       <section className="py-16 px-6 text-center">
-        <h2 className="font-cinzel text-2xl text-p-gold">AVAILABLE IN 5 LANGUAGES</h2>
+        <h2 className="font-dirt font-black text-xl md:text-2xl uppercase tracking-[0.1em] text-p-gold">AVAILABLE IN 5 LANGUAGES</h2>
         <div className="flex gap-2 sm:gap-4 justify-center flex-wrap mt-8">
           {languages.map(l => (
-            <span key={l.lang} className="border border-p-gold/40 rounded-full px-5 py-2 text-sm text-p-gold font-oswald tracking-widest uppercase hover:bg-p-gold/5 cursor-default transition-colors">
+            <span key={l.lang} className="border border-[#FF9D00]/40 rounded-full px-5 py-2 text-xs text-p-gold font-inter font-black tracking-widest uppercase hover:bg-[#FF9D00]/5 cursor-default transition-colors">
               {l.lang}
             </span>
           ))}
@@ -99,18 +113,18 @@ export default function Tickets() {
       </section>
 
       {/* DOLBY SECTION */}
-      <section className="py-12 px-6">
-        <div className="bg-p-dark border border-p-gold/20 rounded-2xl p-8 md:p-10 max-w-2xl mx-auto shadow-2xl">
-          <h2 className="font-cinzel text-3xl text-p-gold">DOLBY CINEMA</h2>
+      <section className="py-12 px-6 relative z-10">
+        <div className="hero-glass-card rounded-2xl p-8 md:p-10 max-w-2xl mx-auto shadow-2xl relative z-10">
+          <h2 className="font-dirt font-black text-2xl md:text-3xl uppercase tracking-[0.1em] text-p-gold">DOLBY CINEMA</h2>
           <div className="gold-divider mx-0 w-16" />
-          <p className="font-noto text-sm text-p-cream/80 mt-4 leading-relaxed max-w-lg">
+          <p className="font-inter text-sm text-p-cream/80 mt-4 leading-relaxed max-w-lg">
             Experience PEDDI in the most immersive theatrical format ever created.
           </p>
           <ul className="mt-8 space-y-4">
             {["Dolby Vision — Crystal clear, lifelike images", "Dolby Atmos — Hear every blade of grass in Vizianagaram", "Premium theatrical experience worldwide"].map((text, i) => (
               <li key={i} className="flex flex-start gap-4">
-                <Check className="text-p-gold flex-shrink-0 mt-0.5" size={20} />
-                <span className="font-noto text-sm text-p-muted">{text}</span>
+                <Check className="text-[#FF9D00] flex-shrink-0 mt-0.5" size={20} />
+                <span className="font-inter text-sm text-p-muted">{text}</span>
               </li>
             ))}
           </ul>

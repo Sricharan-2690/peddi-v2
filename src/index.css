@@ -1,22 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Oswald:wght@400;600;700&family=Noto+Sans:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@300;400;600;800;900&family=Inter:wght@300;400;600;800&family=Oswald:wght@400;600;700&family=Noto+Sans:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Sans+Devanagari:wght@400;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 
 body {
-  background-color: #0A0604;
+  background-color: transparent;
   color: #F5F0E8;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
 }
 
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0A0604; }
-::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #0A0A0A; }
+::-webkit-scrollbar-thumb { background: #FF9D00; border-radius: 2px; }
 
 .grain-overlay {
   position: fixed;
@@ -30,18 +30,19 @@ body {
 }
 
 .gold-divider {
-  width: 80px; height: 1px;
-  background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+  width: 80px; height: 1.5px;
+  background: linear-gradient(90deg, transparent, #FFB733, transparent);
   margin: 16px auto;
+  opacity: 0.8;
 }
 
 .section-divider {
   width: 100%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,157,0,0.2), transparent);
 }
 
 .text-outline-gold {
-  -webkit-text-stroke: 1px rgba(212,175,55,0.3);
+  -webkit-text-stroke: 1px rgba(255,157,0,0.2);
   color: transparent;
 }
 
@@ -60,4 +61,156 @@ body {
 .shimmer-btn:hover::after {
   opacity: 1;
   animation: shimmer 0.6s linear;
+}
+
+/* Global Hero Styling Tokens */
+.hero-bg {
+  background-color: transparent !important;
+}
+
+.hero-text-gradient {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-p-goldlt to-p-amber;
+  filter: drop-shadow(0 0 12px rgba(255, 157, 0, 0.4));
+}
+
+.hero-glow-orb {
+  @apply absolute rounded-full pointer-events-none -z-10 bg-p-amber/10 blur-[100px];
+}
+
+.hero-glass-card {
+  @apply bg-black/30 backdrop-blur-md border border-[#FF9D00]/10;
+}
+
+.hero-btn-primary {
+  @apply bg-gradient-to-r from-p-amber to-p-goldlt text-white font-black tracking-[0.2em] uppercase transition-all duration-300 shadow-[0_0_20px_rgba(255,157,0,0.5)] border border-[#FFB733] hover:scale-105;
+}
+
+.hero-btn-secondary {
+  @apply border-2 border-p-amber text-p-amber font-black tracking-[0.2em] uppercase transition-all duration-300 hover:bg-p-amber/10 hover:scale-105;
+}
+
+.hero-border-amber {
+  @apply border border-[#FF9D00]/30;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME — Premium White & Mace-Brown
+   BG     : #FDFAF6  (warm white — like high-end paper)
+   Surface: #F5EEE4  (very subtle warm lift for cards)
+   Text   : #2A1505  (deep espresso — readable, rich)
+   Muted  : #7A5230  (warm mid-brown)
+   Accent : #7A4A10  (dark brown-gold — no garish orange)
+   Border : rgba(100,60,20,0.14)
+   ═══════════════════════════════════════════════════════════ */
+
+[data-theme="light"] body {
+  background-color: #FDFAF6;
+  color: #2A1505;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track { background: #EDE4D5; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: #7A4A10; border-radius: 2px; }
+
+/* ── Page background ── */
+[data-theme="light"] .hero-bg {
+  background-color: #FDFAF6 !important;
+}
+
+/* ── Cards ── */
+[data-theme="light"] .hero-glass-card {
+  background: rgba(245, 238, 228, 0.80) !important;
+  border-color: rgba(100, 60, 20, 0.14) !important;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 16px rgba(60,30,5,0.06);
+}
+
+/* ── Glow orb ── very subtle warm glow */
+[data-theme="light"] .hero-glow-orb {
+  background: rgba(139, 80, 20, 0.07) !important;
+  filter: blur(120px);
+}
+
+/* ── Heading gradient ── rich brown */
+[data-theme="light"] .hero-text-gradient {
+  background: linear-gradient(to right, #3D1A05, #7A4A10) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 1px 4px rgba(100,50,10,0.15)) !important;
+}
+
+/* ── Dividers ── */
+[data-theme="light"] .gold-divider {
+  background: linear-gradient(90deg, transparent, #7A4A10, transparent);
+  opacity: 0.5;
+}
+[data-theme="light"] .section-divider {
+  background: linear-gradient(90deg, transparent, rgba(100,60,20,0.2), transparent);
+}
+
+/* ══ TEXT OVERRIDES ══════════════════════════════════════════ */
+
+/* cream → espresso */
+[data-theme="light"] [class*="text-p-cream"] {
+  color: #2A1505 !important;
+}
+/* muted → warm mid-brown */
+[data-theme="light"] [class*="text-p-muted"] {
+  color: #8B6040 !important;
+}
+/* gold/amber accents → refined dark brown-gold */
+[data-theme="light"] [class*="text-p-gold"],
+[data-theme="light"] [class*="text-p-amber"] {
+  color: #7A4A10 !important;
+}
+[data-theme="light"] [class*="text-p-goldlt"] {
+  color: #9A6020 !important;
+}
+/* zinc-400 nav/subtitle text → readable mid-brown */
+[data-theme="light"] [class*="text-zinc-400"] {
+  color: #7A5230 !important;
+}
+/* white text inside page content → espresso */
+[data-theme="light"] main [class*="text-white"]:not(button):not(.hero-btn-primary):not(.hero-btn-primary *) {
+  color: #2A1505 !important;
+}
+
+/* ══ BUTTONS ════════════════════════════════════════════════ */
+
+/* Primary: keep the amber gradient, just ensure white text */
+[data-theme="light"] .hero-btn-primary,
+[data-theme="light"] .hero-btn-primary * {
+  color: #fff !important;
+}
+
+/* Secondary: brown border + text */
+[data-theme="light"] .hero-btn-secondary {
+  border-color: #7A4A10 !important;
+  color: #7A4A10 !important;
+}
+[data-theme="light"] .hero-btn-secondary:hover {
+  background: rgba(122,74,16,0.08) !important;
+}
+
+/* ══ STICKY FILTER / NAV BARS ════════════════════════════════ */
+[data-theme="light"] [class*="bg-black\/80"] {
+  background: rgba(253, 250, 246, 0.94) !important;
+  backdrop-filter: blur(16px);
+  border-color: rgba(100,60,20,0.14) !important;
+}
+
+/* ══ ANALYTICS ════════════════════════════════════════════════ */
+/* Bar chart track */
+[data-theme="light"] [class*="bg-white\/5"] {
+  background: rgba(122,74,16,0.08) !important;
+  border-color: rgba(122,74,16,0.1) !important;
+}
+
+/* ══ HOVER GLOW on cards (Updates / Cast) ════════════════════ */
+[data-theme="light"] .hover\:shadow-\[#FF9D00\]\/10:hover {
+  --tw-shadow-color: rgba(122,74,16,0.12) !important;
+}
+
+/* ══ GALLERY LIGHTBOX — always stays dark ════════════════════ */
+[data-theme="light"] .fixed.bg-black\/95 {
+  background: rgba(0,0,0,0.95) !important;
 }

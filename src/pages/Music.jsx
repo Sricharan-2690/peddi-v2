@@ -23,14 +23,14 @@ const SongCard = ({ song }) => {
   };
 
   return (
-    <div className="bg-p-dark border border-p-gold/20 rounded-2xl p-8 mt-8 max-w-3xl mx-auto shadow-xl">
+    <div className="hero-glass-card rounded-2xl p-8 mt-8 max-w-3xl mx-auto shadow-2xl hover:border-p-gold/40 transition-colors duration-300">
       {song.badge && (
-        <span className="bg-p-gold text-p-black text-xs font-oswald font-bold px-3 py-1 rounded-full inline-block mb-4 uppercase">
+        <span className="bg-gradient-to-r from-p-golddk to-p-gold text-white text-xs font-inter font-black px-3 py-1 rounded-full inline-block mb-4 uppercase tracking-widest shadow-[0_0_15px_rgba(255,157,0,0.5)]">
           {song.badge}
         </span>
       )}
-      <h3 className="font-cinzel text-3xl text-p-gold uppercase">{song.title}</h3>
-      <p className="font-noto text-sm text-p-muted mt-2">{song.subtitle}</p>
+      <h3 className="font-dirt font-black text-3xl text-p-gold uppercase tracking-[0.1em]">{song.title}</h3>
+      <p className="font-inter text-sm text-p-muted mt-2">{song.subtitle}</p>
 
       {/* Language Tabs */}
       <div className="flex gap-2 mt-4 flex-wrap">
@@ -38,10 +38,10 @@ const SongCard = ({ song }) => {
           <button
             key={lang}
             onClick={() => setActiveLang(lang)}
-            className={`font-oswald text-xs px-3 py-1 rounded transition-colors uppercase ${
+            className={`font-inter font-black text-xs px-3 py-1 rounded-full transition-all uppercase tracking-widest ${
               activeLang === lang 
-                ? 'bg-p-gold text-p-black font-bold' 
-                : 'border border-p-gold text-p-gold bg-transparent hover:bg-p-gold/10'
+                ? 'bg-gradient-to-r from-p-golddk to-p-gold text-white shadow-[0_0_8px_rgba(255,157,0,0.4)]' 
+                : 'border border-p-gold/30 text-p-muted bg-transparent hover:border-p-gold hover:text-p-gold'
             }`}
           >
             {lang}
@@ -66,14 +66,14 @@ const SongCard = ({ song }) => {
       </div>
 
       <div className="flex flex-col items-center mt-4">
-        <button onClick={togglePlay} className="w-14 h-14 bg-p-gold rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-200">
-          {isPlaying ? <Pause size={24} className="text-p-black fill-current" /> : <Play size={24} className="text-p-black fill-current ml-1" />}
+        <button onClick={togglePlay} className="w-14 h-14 bg-gradient-to-br from-p-goldlt to-p-golddk rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-transform duration-200 shadow-[0_0_20px_rgba(255,157,0,0.5)]">
+          {isPlaying ? <Pause size={24} className="text-white fill-current" /> : <Play size={24} className="text-white fill-current ml-1" />}
         </button>
         {/* Silent audio config */}
         <audio ref={audioRef} src={song.audio} onEnded={() => setIsPlaying(false)} onError={(e) => { /* mock */ }} />
         
         {song.record && (
-          <p className="font-oswald text-sm text-p-gold mt-4 uppercase">🏆 {song.record}</p>
+          <p className="font-inter font-black text-sm text-p-gold mt-4 uppercase tracking-widest">🏆 {song.record}</p>
         )}
       </div>
     </div>
@@ -82,40 +82,41 @@ const SongCard = ({ song }) => {
 
 export default function Music() {
   return (
-    <div className="w-full">
+    <div className="w-full hero-bg min-h-screen">
       {/* AR RAHMAN SPOTLIGHT */}
-      <section className="min-h-[60vh] relative bg-gradient-to-br from-p-rust via-p-dark to-p-black flex items-center px-6 py-20 overflow-hidden pt-32">
+      <section className="min-h-[60vh] relative flex items-center px-6 py-20 overflow-hidden pt-32">
+        <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
         <h1 
-          className="text-outline-gold font-cinzel absolute left-0 text-[8rem] md:text-[14rem] leading-none opacity-20 top-1/2 -translate-y-1/2 select-none whitespace-nowrap pointer-events-none"
+          className="text-outline-gold font-dirt font-black absolute left-0 text-[8rem] md:text-[14rem] leading-none opacity-10 top-1/2 -translate-y-1/2 select-none whitespace-nowrap pointer-events-none uppercase tracking-widest"
         >
           A.R.RAHMAN
         </h1>
 
-        <div className="relative z-10 max-w-xl mx-auto md:ml-auto md:mr-12 lg:mr-32 bg-p-black/80 backdrop-blur rounded-2xl p-10 border border-p-gold/20 shadow-2xl">
-          <span className="font-oswald text-xs tracking-widest text-p-muted uppercase">MUSIC BY</span>
-          <h2 className="font-cinzel text-5xl text-p-gold mt-2">A.R. Rahman</h2>
+        <div className="relative z-10 max-w-xl mx-auto md:ml-auto md:mr-12 lg:mr-32 hero-glass-card backdrop-blur-xl rounded-2xl p-10 shadow-2xl">
+          <span className="font-inter font-black text-xs tracking-widest text-p-muted uppercase">MUSIC BY</span>
+          <h2 className="font-dirt font-black text-5xl uppercase tracking-[0.1em] hero-text-gradient mt-2">A.R. Rahman</h2>
           <div className="gold-divider mx-0 w-20" />
           
-          <p className="font-noto text-base italic text-p-cream/80 leading-relaxed mt-4">
+          <p className="font-inter text-base italic text-p-cream/80 leading-relaxed mt-4">
             "We wanted to recreate a raw, unsung energy that hasn't been heard since Humma Humma. Vizianagaram inspired sounds I've never explored."
           </p>
           
           <div className="flex gap-3 mt-6 flex-wrap">
             {['Oscar Winner', 'Golden Globe', 'National Award'].map(b => (
-              <span key={b} className="border border-p-gold/30 rounded-full px-3 py-1 text-xs font-oswald text-p-gold uppercase">{b}</span>
+              <span key={b} className="border border-p-gold/40 rounded-full px-3 py-1 text-xs font-inter font-bold text-p-gold uppercase tracking-widest hover:bg-p-gold/10 transition-colors">{b}</span>
             ))}
           </div>
 
-          <p className="font-noto text-xs text-p-muted/50 mt-6 uppercase">
+          <p className="font-inter text-xs text-p-muted/50 mt-6 uppercase tracking-widest">
             T-Series · ₹35 Crore Music Rights
           </p>
         </div>
       </section>
 
       {/* SONGS SECTION */}
-      <section className="bg-p-black py-20 px-6">
+      <section className="py-20 px-6 relative z-10">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="font-cinzel text-4xl text-p-gold">OFFICIAL SOUNDTRACK</h2>
+          <h2 className="font-dirt font-black text-4xl uppercase tracking-[0.1em] hero-text-gradient">OFFICIAL SOUNDTRACK</h2>
           <div className="gold-divider" />
           
           <div className="mt-12 space-y-8">

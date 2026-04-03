@@ -4,19 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        'p-black':  '#0A0604',
-        'p-dark':   '#1A0A00',
-        'p-rust':   '#2C1810',
-        'p-gold':   '#D4AF37',
-        'p-goldlt': '#F0D060',
-        'p-golddk': '#B8860B',
-        'p-red':    '#8B0000',
+        'p-black':  '#0A0A0A',
+        'p-dark':   '#0A0A0A',   // Unify dark with pure black for hero look
+        'p-rust':   '#1A1205',   // deep amber-black (hero glow bg)
+        'p-gold':   '#FF9D00',   // primary accent — premium amber
+        'p-goldlt': '#FFB733',   // lighter gold highlight
+        'p-golddk': '#CC7D00',   // darker aged gold
+        'p-red':    '#CC7D00',   // replace red with deep gold for premium look
         'p-cream':  '#F5F0E8',
-        'p-muted':  '#A89070',
-        'p-soil':   '#5C3D1E',
+        'p-muted':  '#8A8A8A',
+        'p-soil':   '#3D260A',   // deep warm dark
+        'p-amber':  '#FF9D00',
       },
       fontFamily: {
         cinzel:  ['"Cinzel Decorative"', 'serif'],
+        mont:    ['Montserrat', 'sans-serif'],
+        inter:   ['Inter', 'sans-serif'],
         noto:    ['"Noto Sans"', 'sans-serif'],
         oswald:  ['Oswald', 'sans-serif'],
         telugu:  ['"Noto Sans Telugu"', 'sans-serif'],
@@ -55,8 +58,8 @@ export default {
           '100%': { transform: 'rotateX(0deg)' },
         },
         countPulse: {
-          '0%,100%': { textShadow: '0 0 20px rgba(212,175,55,0.3)' },
-          '50%':     { textShadow: '0 0 40px rgba(212,175,55,0.8)' },
+          '0%,100%': { textShadow: '0 0 20px rgba(255,157,0,0.4)' },
+          '50%':     { textShadow: '0 0 50px rgba(255,157,0,1)' },
         },
         grainShift: {
           '0%,100%': { transform: 'translate(0,0)' },

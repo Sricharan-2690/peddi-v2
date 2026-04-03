@@ -7,17 +7,21 @@ const Youtube = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24
 
 export default function Footer() {
   return (
-    <footer className="bg-p-dark border-t border-p-gold/10 w-full relative z-30">
+    <footer className="hero-bg border-t border-[#FF9D00]/20 w-full relative z-30">
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* Top row */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0">
-          {/* Left */}
-          <Link to="/" className="font-cinzel text-4xl text-p-gold select-none flex-shrink-0" style={{ textShadow: '0 0 20px rgba(212,175,55,0.35)' }}>
-            PEDDI
+          {/* Left — same gradient as Navbar */}
+          <Link to="/" className="flex items-center hover:scale-105 transition-all duration-300 flex-shrink-0">
+            <img 
+              src="/images/title card in all langueges/English Title.png" 
+              alt="PEDDI" 
+              className="h-8 md:h-10 object-contain drop-shadow-[0_0_15px_rgba(255,157,0,0.3)]" 
+            />
           </Link>
           
           {/* Center */}
-          <div className="flex gap-6 flex-wrap justify-center font-oswald text-xs text-p-muted tracking-widest">
+          <div className="flex gap-6 flex-wrap justify-center font-inter font-bold text-xs text-p-muted tracking-widest uppercase">
             <Link to="/" className="hover:text-p-gold transition-colors duration-200">HOME</Link>
             <Link to="/cast" className="hover:text-p-gold transition-colors duration-200">CAST & CREW</Link>
             <Link to="/music" className="hover:text-p-gold transition-colors duration-200">MUSIC</Link>
@@ -39,11 +43,11 @@ export default function Footer() {
           </div>
         </div>
         
-        {/* Gold divider */}
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-p-gold/30 to-transparent my-10" />
+        {/* Orange divider */}
+        <div className="w-full h-px bg-gradient-to-r from-transparent via-p-gold/40 to-transparent my-10" />
         
         {/* Bottom row */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 font-noto text-xs text-p-muted/50 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 font-inter text-xs text-p-muted/50 text-center md:text-left">
           <p>© 2026 Mythri Movie Makers. All rights reserved.</p>
           <p>Presented by Sukumar Writings · Vriddhi Cinemas</p>
         </div>
