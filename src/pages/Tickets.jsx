@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import languages from '../data/languages';
+import { Helmet } from 'react-helmet-async';
 import { Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const platforms = [
-  {name:'BookMyShow', url:'https://in.bookmyshow.com'},
-  {name:'Paytm Movies', url:'https://paytm.com/movies'},
-  {name:'Amazon Pay Movies', url:'https://amazon.in/movies'},
-  {name:'INOX', url:'https://inoxmovies.com'},
-  {name:'Cinépolis India', url:'https://cinepolisindia.com'},
-  {name:'Fandango (USA)', url:'https://fandango.com'},
+  {name:'BookMyShow', url:'https://in.bookmyshow.com/movies/hyderabad/peddi/ET00439772'},
+  {name:'District', url:'https://www.district.in/movies/peddi-movie-tickets-MV194276?utm_source=paytm_redirection'},
 ];
 
 // Timer matching the Hero Section style
@@ -73,6 +70,19 @@ export default function Tickets() {
 
   return (
     <div className="w-full hero-bg min-h-screen">
+      <Helmet>
+        <title>Peddi Movie — Book Tickets | Releasing 30 April 2026</title>
+        <meta name="description" content="Book tickets for Peddi Telugu movie releasing 30 April 2026. Official ticket booking page." />
+        <meta property="og:title" content="Book Tickets — Peddi Movie 30 April 2026" />
+        <meta property="og:description" content="Book your tickets now for Peddi Telugu movie releasing 30 April 2026." />
+        <meta property="og:image" content="/og-poster.jpg" />
+        <meta property="og:type" content="video.movie" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Book Tickets — Peddi Movie 30 April 2026" />
+        <meta name="twitter:description" content="Book tickets for Peddi Telugu movie releasing 30 April 2026." />
+      </Helmet>
+      <h1 className="sr-only">Peddi Telugu Movie — Book Tickets</h1>
+
       {/* HERO */}
       <section className="relative min-h-[50vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-16 overflow-hidden">
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>

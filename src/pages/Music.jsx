@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import languages from '../data/languages';
+import { Helmet } from 'react-helmet-async';
 import songsData from '../data/songsData';
 import { Play, Pause } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
@@ -86,6 +87,19 @@ export default function Music() {
 
   return (
     <div className="w-full hero-bg min-h-screen">
+      <Helmet>
+        <title>Peddi Movie — Music & Soundtrack | Official Website</title>
+        <meta name="description" content="Listen to the official music and soundtrack of Peddi Telugu movie. Releasing 30 April 2026." />
+        <meta property="og:title" content="Peddi Movie — Music & Soundtrack" />
+        <meta property="og:description" content="Official music and soundtrack of Peddi Telugu movie releasing 30 April 2026." />
+        <meta property="og:image" content="/og-poster.jpg" />
+        <meta property="og:type" content="video.movie" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Peddi Movie — Music & Soundtrack" />
+        <meta name="twitter:description" content="Listen to the official music of Peddi Telugu movie. Releasing 30 April 2026." />
+      </Helmet>
+      <h1 className="sr-only">Peddi Telugu Movie — Music and Soundtrack</h1>
+
       {/* AR RAHMAN SPOTLIGHT */}
       <section className="min-h-[60vh] relative flex items-center px-6 py-20 overflow-hidden pt-32">
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>

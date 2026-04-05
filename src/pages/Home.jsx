@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Play, Ticket, ChevronDown } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -164,6 +165,31 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen font-inter transition-colors duration-500 flex flex-col pt-16 ${themeClasses.bgApp} selection:bg-p-amber/30`}>
+      <Helmet>
+        <title>Peddi Movie — Official Website | Releasing 30 April 2026</title>
+        <meta name="description" content="Peddi — official Telugu movie website. Watch the trailer, explore the cast, listen to music and book tickets. Releasing 30 April 2026." />
+        <meta property="og:title" content="Peddi Movie — Releasing 30 April 2026" />
+        <meta property="og:description" content="Official website of Peddi Telugu movie. Trailer, cast, music and tickets." />
+        <meta property="og:image" content="/og-poster.jpg" />
+        <meta property="og:type" content="video.movie" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Peddi Movie — Releasing 30 April 2026" />
+        <meta name="twitter:description" content="Official website of Peddi Telugu movie. Releasing 30 April 2026." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Movie",
+            "name": "Peddi",
+            "description": "Peddi is an official Telugu action movie releasing on 30 April 2026.",
+            "datePublished": "2026-04-30",
+            "inLanguage": "te",
+            "genre": ["Action", "Thriller"],
+            "image": "/og-poster.jpg",
+            "url": "https://peddimovie.com"
+          })}
+        </script>
+      </Helmet>
+      <h1 className="sr-only">Peddi Telugu Movie — Official Website</h1>
 
       {/* Hero Section */}
       <section className="relative min-h-[100dvh] flex flex-col justify-center items-center text-center px-4 pt-20 pb-10 overflow-hidden">
@@ -171,7 +197,7 @@ export default function Home() {
         <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px] rounded-full pointer-events-none -z-10 ${!isLight ? 'bg-p-amber/10 blur-[100px]' : 'bg-p-amber/5 blur-[80px]'}`}></div>
         
         <div className="z-10 flex flex-col items-center w-full max-w-4xl mx-auto mt-6">
-            <div className={`font-mont font-normal text-sm sm:text-base tracking-[0.4em] uppercase mb-8 sm:mb-10 text-center ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} drop-shadow-[0_0_6px_rgba(255,157,0,0.7)] leading-relaxed -translate-y-4`}>
+            <div className={`font-mont font-normal text-sm sm:text-base tracking-[0.4em] uppercase mb-4 sm:mb-6 text-center ${isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} drop-shadow-[0_0_6px_rgba(255,157,0,0.7)] leading-relaxed -translate-y-4`}>
                {t('home.megaPowerStar')} <br/> {t('home.ramCharan')}
             </div>
             
@@ -191,19 +217,19 @@ export default function Home() {
                    <img
                      key={src}
                      src={src}
-                     alt="Peddi Title"
+                     alt="Peddi movie official logo"
                      className={`absolute inset-0 w-full h-full object-contain transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${transformClass} drop-shadow-[0_0_15px_rgba(255,157,0,0.4)]`}
                    />
                  );
                })}
             </div>
             
-            <h2 className={`font-mont font-semibold text-sm sm:text-lg md:text-xl tracking-[0.4em] uppercase mb-10 ${isLight ? 'text-[#2A1505]' : 'text-white'} drop-shadow-md`}>
+            <h2 className={`font-mont font-semibold text-sm sm:text-lg md:text-xl tracking-[0.4em] uppercase mb-6 sm:mb-8 ${isLight ? 'text-[#2A1505]' : 'text-white'} drop-shadow-md`}>
                {t('home.theRageBegins')}
             </h2>
 
-            <div className="mb-10 sm:mb-12 flex flex-col items-center">
-               <span className="mb-4 sm:mb-5 bg-gradient-to-r from-[#FFB733] to-[#FF9D00] text-white font-inter font-black text-[9px] sm:text-[10px] tracking-widest px-5 py-2 rounded-full uppercase shadow-[0_0_15px_rgba(255,157,0,0.4)]">
+            <div className="mb-6 sm:mb-8 flex flex-col items-center">
+               <span className="mb-3 sm:mb-4 bg-gradient-to-r from-[#FFB733] to-[#FF9D00] text-white font-inter font-black text-[9px] sm:text-[10px] tracking-widest px-5 py-2 rounded-full uppercase shadow-[0_0_15px_rgba(255,157,0,0.4)]">
                  {t('home.worldwideRelease')}
                </span>
                <h2 className="font-mont font-black text-4xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFB733] to-[#FF9D00] uppercase tracking-tight drop-shadow-[0_0_15px_rgba(255,157,0,0.4)] transition-all">
@@ -212,7 +238,7 @@ export default function Home() {
             </div>
 
             {/* Countdown */}
-            <div className="mb-10 sm:mb-12 flex justify-center items-center gap-1.5 sm:gap-5 w-full max-w-2xl px-2">
+            <div className="mb-6 sm:mb-8 flex justify-center items-center gap-1.5 sm:gap-5 w-full max-w-2xl px-2">
                {Object.entries(timeLeft).map(([unit, value], idx, arr) => (
                   <React.Fragment key={unit}>
                     <div className="flex flex-col items-center">
@@ -240,14 +266,14 @@ export default function Home() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 w-full justify-center max-w-md">
-               <a href="https://in.bookmyshow.com/movies/hyderabad/peddi/ET00439772" target="_blank" rel="noopener noreferrer"
+               <Link to="/tickets"
                   className={`w-full sm:w-[200px] h-14 rounded-full flex items-center justify-center gap-2 font-inter tracking-[0.2em] text-xs font-black transition-all duration-300 ${themeClasses.btnPrimary}`}>
                   <Ticket size={16} /> {t('home.bookTickets')}
-               </a>
-               <a href="https://youtu.be/f4poVE-r8Ho?si=7_SjSUZaXbTNAhD1" target="_blank" rel="noopener noreferrer"
+               </Link>
+               <Link to="/updates" state={{ filter: 'Trailers' }}
                   className={`w-full sm:w-[200px] h-14 rounded-full flex items-center justify-center gap-2 font-inter tracking-[0.2em] text-xs font-black transition-all duration-300 hero-btn-secondary`}>
                   <Play size={16} fill="currentColor" /> {t('home.watchTrailer')}
-               </a>
+               </Link>
             </div>
         </div>
         
@@ -269,7 +295,7 @@ export default function Home() {
       {/* Updates Section */}
       <section className={`py-12 sm:py-16 px-6 ${themeClasses.bgApp}`}>
          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col sm:flex-row justify-between items-center md:items-end mb-12 sm:mb-16 gap-6">
+            <div className="flex flex-col sm:flex-row justify-between items-center md:items-end mb-8 sm:mb-10 gap-4 sm:gap-6">
                <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center sm:text-left ${themeClasses.goldText}`}>{t('home.latestUpdates')}</h3>
                
                {/* Desktop Category Menu inside updates */}
@@ -282,11 +308,11 @@ export default function Home() {
                </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10">
                {newsData.slice(0, 2).map((n) => (
                   <div key={n.id} className={`group rounded-[2rem] overflow-hidden ${themeClasses.cardBg} border ${themeClasses.border} transition-transform duration-500 hover:-translate-y-2 flex flex-col shadow-lg`}>
                      <div className="aspect-[16/9] w-full overflow-hidden relative">
-                        <img src={n.image} alt={n.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0 grayscale-[20%]" />
+                        <img src={n.image} alt="Peddi movie official still 2026" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0 grayscale-[20%]" />
                         <div className="absolute inset-0 bg-gradient-to-t from-p-black via-transparent to-transparent opacity-80"></div>
                      </div>
                      <div className="p-8 flex flex-col flex-grow relative z-10">
@@ -307,9 +333,9 @@ export default function Home() {
       </section>
 
       {/* Cast Section */}
-      <section className={`py-24 sm:py-32 px-6 ${themeClasses.cardBg}`}>
+      <section className={`py-16 sm:py-20 px-6 ${themeClasses.cardBg}`}>
          <div className="max-w-7xl mx-auto">
-            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center mb-16 ${themeClasses.goldText}`}>{t('home.theCast')}</h3>
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl text-center mb-10 sm:mb-12 ${themeClasses.goldText}`}>{t('home.theCast')}</h3>
             
             <div 
                ref={sliderRef}
@@ -326,10 +352,10 @@ export default function Home() {
                {castData.slice(0, 5).map((member) => (
                   <div key={member.id} className="min-w-[75vw] sm:min-w-[280px] md:min-w-[320px] snap-center group cursor-pointer">
                      <div className={`relative overflow-hidden rounded-[2rem] aspect-[3/4] mb-6 ${!isLight ? 'bg-zinc-900 border border-white/5' : 'bg-gray-100 border border-black/5'} shadow-xl`}>
-                        <img src={member.image} onError={e => e.target.src=member.fallback} alt={member.actor} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 filter group-hover:brightness-110 grayscale-[30%] group-hover:grayscale-0" />
+                        <img src={member.image} onError={e => e.target.src=member.fallback} alt={`${member.actor} in Peddi Telugu movie`} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 filter group-hover:brightness-110 grayscale-[30%] group-hover:grayscale-0" />
                         
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500 flex flex-col justify-end p-6 md:p-8">
-                           <p className="text-white/90 font-inter text-xs md:text-sm font-medium leading-relaxed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 line-clamp-4">
+                           <p className="keep-white text-white/90 font-inter text-xs md:text-sm font-medium leading-relaxed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 line-clamp-4">
                              {member.description}
                            </p>
                         </div>
@@ -344,7 +370,7 @@ export default function Home() {
             </div>
             
             {/* Scroll Indicator Dots */}
-            <div className="flex justify-center items-center gap-2 mt-2 mb-10 pointer-events-none transition-all duration-300">
+            <div className="flex justify-center items-center gap-2 mt-2 mb-8 pointer-events-none transition-all duration-300">
                {Array.from({ length: 5 }).map((_, idx) => (
                  <div 
                    key={idx} 
@@ -367,11 +393,11 @@ export default function Home() {
       </section>
 
       {/* Records & Analytics Section */}
-      <section className={`py-24 sm:py-32 px-6 text-center ${themeClasses.bgApp} border-t ${themeClasses.border}`}>
+      <section className={`py-16 sm:py-20 px-6 text-center ${themeClasses.bgApp} border-t ${themeClasses.border}`}>
          <div className="max-w-5xl mx-auto">
-            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-16 ${themeClasses.goldText}`}>{t('home.recordsImpact')}</h3>
+            <h3 className={`font-mont font-black uppercase tracking-[0.1em] text-3xl sm:text-4xl mb-10 sm:mb-12 ${themeClasses.goldText}`}>{t('home.recordsImpact')}</h3>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-16">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-10 sm:mb-12">
                <AnimatedStat value={46} suffix="M" label={t('stat.views24h')} duration={2500} />
                <AnimatedStat value={5} label={t('stat.languages')} duration={1500} />
                <AnimatedStat value={130} suffix={<span className="text-xl sm:text-2xl ml-1">CR</span>} label={t('stat.netflixDeal')} duration={3000} />

@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# WordPress build export files
+wp-theme-export/
+*.zip
+peddi.zip
+peddi-theme.zip
+pack-theme.js
+build_err.log
+build_err.txt

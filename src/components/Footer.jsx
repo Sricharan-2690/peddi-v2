@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 const Instagram = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
-const Twitter = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>;
-const Youtube = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>;
+const XTwitter = ({ size }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>;
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -27,21 +26,17 @@ export default function Footer() {
           <div className="flex gap-6 flex-wrap justify-center font-inter font-bold text-xs text-p-muted tracking-widest uppercase">
             <Link to="/" className="hover:text-p-gold transition-colors duration-200">{t('footer.home')}</Link>
             <Link to="/cast" className="hover:text-p-gold transition-colors duration-200">{t('footer.castCrew')}</Link>
-            <Link to="/music" className="hover:text-p-gold transition-colors duration-200">{t('footer.music')}</Link>
             <Link to="/updates" className="hover:text-p-gold transition-colors duration-200">{t('footer.updates')}</Link>
             <Link to="/gallery" className="hover:text-p-gold transition-colors duration-200">{t('footer.gallery')}</Link>
           </div>
           
           {/* Right */}
           <div className="flex gap-6 flex-shrink-0">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="text-p-muted hover:text-p-gold transition-colors duration-200">
+            <a href="https://www.instagram.com/peddimovie?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer" className="text-p-muted hover:text-p-gold transition-colors duration-200">
               <Instagram size={20} />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="text-p-muted hover:text-p-gold transition-colors duration-200">
-              <Twitter size={20} />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="text-p-muted hover:text-p-gold transition-colors duration-200">
-              <Youtube size={20} />
+            <a href="https://x.com/PeddiMovieOffl?s=20" target="_blank" rel="noreferrer" className="text-p-muted hover:text-p-gold transition-colors duration-200">
+              <XTwitter size={20} />
             </a>
           </div>
         </div>

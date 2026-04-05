@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import castData from '../data/castData';
 import crewData from '../data/crewData';
 import { useLanguage } from '../context/LanguageContext';
@@ -9,6 +10,19 @@ export default function CastCrew() {
 
   return (
     <div className="w-full hero-bg min-h-screen">
+      <Helmet>
+        <title>Peddi Movie — Cast & Crew | Official Website</title>
+        <meta name="description" content="Meet the cast and crew of Peddi Telugu movie. Releasing 30 April 2026." />
+        <meta property="og:title" content="Peddi Movie — Cast & Crew" />
+        <meta property="og:description" content="Full cast and crew of Peddi Telugu movie releasing 30 April 2026." />
+        <meta property="og:image" content="/og-poster.jpg" />
+        <meta property="og:type" content="video.movie" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Peddi Movie — Cast & Crew" />
+        <meta name="twitter:description" content="Meet the cast and crew of Peddi Telugu movie. Releasing 30 April 2026." />
+      </Helmet>
+      <h1 className="sr-only">Peddi Telugu Movie — Cast and Crew</h1>
+
       {/* PAGE HERO */}
       <section className="relative flex items-end justify-center pb-8 md:pb-16 text-center pt-24 md:pt-32 overflow-hidden">
         <div className="hero-glow-orb top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] max-w-[600px] max-h-[600px]"></div>
@@ -25,7 +39,7 @@ export default function CastCrew() {
             <img 
               src="/images/cast/ram charan.jpg" 
               onError={e => e.target.src = 'https://picsum.photos/seed/rc1/400/500'} 
-              alt="Ram Charan as Peddi" 
+              alt="Ram Charan in Peddi Telugu movie" 
               className="aspect-[4/5] object-cover rounded-lg w-full max-w-sm mx-auto border border-p-gold/20 hover:scale-[1.02] transition-transform duration-500"
               style={{ filter: 'sepia(20%) saturate(140%) contrast(110%)' }}
             />
@@ -74,8 +88,9 @@ export default function CastCrew() {
                   <img 
                     src={member.image} 
                     onError={e => e.target.src = member.fallback} 
-                    alt={member.actor} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                    alt={`${member.actor} in Peddi Telugu movie`} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    style={{ objectPosition: member.objectPosition || 'center center' }}
                   />
                 </div>
                 <div className="flex-grow">
@@ -104,8 +119,9 @@ export default function CastCrew() {
                     {member.image ? (
                       <img 
                         src={member.image} 
-                        alt={member.name} 
+                        alt={`${member.name} in Peddi Telugu movie`} 
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        style={{ objectPosition: member.objectPosition || 'center top' }}
                       />
                     ) : (
                       <span className="font-dirt font-black text-sm text-p-gold">{initials}</span>

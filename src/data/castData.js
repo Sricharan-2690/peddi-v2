@@ -77,6 +77,7 @@ const cast = [
     character: 'Supporting Role',
     image: '/images/cast/john-vijay.jpg',
     fallback: 'https://picsum.photos/seed/jv10/400/500',
+    objectPosition: 'center top',
     description: 'A dynamic presence in the rural backdrop.',
   },
   {

@@ -78,7 +78,7 @@ body {
 }
 
 .hero-glass-card {
-  @apply bg-black/30 backdrop-blur-md border border-[#FF9D00]/10;
+  @apply bg-black/30 backdrop-blur-md border border-[#FF9D00]/40;
 }
 
 .hero-btn-primary {
@@ -119,7 +119,7 @@ body {
 /* ── Cards ── */
 [data-theme="light"] .hero-glass-card {
   background: rgba(245, 238, 228, 0.80) !important;
-  border-color: rgba(100, 60, 20, 0.14) !important;
+  border-color: rgba(100, 60, 20, 0.3) !important;
   backdrop-filter: blur(8px);
   box-shadow: 0 2px 16px rgba(60,30,5,0.06);
 }
@@ -170,7 +170,7 @@ body {
   color: #7A5230 !important;
 }
 /* white text inside page content → espresso */
-[data-theme="light"] main [class*="text-white"]:not(button):not(.hero-btn-primary):not(.hero-btn-primary *) {
+[data-theme="light"] main [class*="text-white"]:not(button):not(.hero-btn-primary):not(.hero-btn-primary *):not(.keep-white) {
   color: #2A1505 !important;
 }
 

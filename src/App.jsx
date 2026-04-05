@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
 import LoadingScreen from './components/LoadingScreen'
@@ -9,7 +10,6 @@ import ScrollProgress from './components/ScrollProgress'
 import ParticlesBackground from './components/ParticlesBackground'
 import Home from './pages/Home'
 import CastCrew from './pages/CastCrew'
-import Music from './pages/Music'
 import Updates from './pages/Updates'
 import Gallery from './pages/Gallery'
 import Tickets from './pages/Tickets'
@@ -39,6 +39,7 @@ export default function App() {
   }
 
   return (
+    <HelmetProvider>
     <LanguageProvider>
     <ThemeProvider>
     <BrowserRouter>
@@ -56,7 +57,6 @@ export default function App() {
           <Routes>
             <Route path="/"          element={<Home />} />
             <Route path="/cast"      element={<CastCrew />} />
-            <Route path="/music"     element={<Music />} />
             <Route path="/updates"   element={<Updates />} />
             <Route path="/gallery"   element={<Gallery />} />
             <Route path="/tickets"   element={<Tickets />} />
@@ -68,5 +68,6 @@ export default function App() {
     </BrowserRouter>
     </ThemeProvider>
     </LanguageProvider>
+    </HelmetProvider>
   )
 }
