@@ -108,16 +108,18 @@ export default function Tickets() {
 
         <div className="mt-10 space-y-4">
           {platforms.map(p => (
-            <div
+            <a
               key={p.name}
-              onClick={() => window.open(p.url, '_blank')}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
               className="hero-glass-card rounded-xl p-5 flex justify-between items-center hover:bg-white/[0.05] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer shadow-xl group"
             >
               <h3 className="font-dirt font-bold uppercase tracking-wide text-base text-p-gold">{p.name}</h3>
               <span className="font-inter font-black text-xs text-[#FF9D00] tracking-[0.2em] group-hover:translate-x-1 transition-transform uppercase">
                 {t('tickets.bookNow')}
               </span>
-            </div>
+            </a>
           ))}
         </div>
       </section>
