@@ -316,9 +316,9 @@ export default function Home() {
                         <div className="absolute inset-0 bg-gradient-to-t from-p-black via-transparent to-transparent opacity-80"></div>
                      </div>
                      <div className="p-8 flex flex-col flex-grow relative z-10">
-                        <span className={`text-[10px] font-inter font-bold tracking-widest uppercase ${themeClasses.textMuted} mb-2 block`}>{n.date} • {n.category}</span>
-                        <h4 className={`font-mont font-bold text-xl sm:text-2xl mb-4 leading-snug uppercase ${isLight ? 'text-[#2A1505]' : 'text-white'}`}>{n.title}</h4>
-                        <p className={`text-sm sm:text-base font-inter ${themeClasses.textMuted} leading-relaxed flex-grow`}>{n.excerpt}</p>
+                        <span className={`text-[10px] font-inter font-bold tracking-widest uppercase ${themeClasses.textMuted} mb-2 block`}>{t(`news.${n.id}.date`)} • {t(`news.${n.id}.category`)}</span>
+                        <h4 className={`font-mont font-bold text-xl sm:text-2xl mb-4 leading-snug uppercase ${isLight ? 'text-[#2A1505]' : 'text-white'}`}>{t(`news.${n.id}.title`)}</h4>
+                        <p className={`text-sm sm:text-base font-inter ${themeClasses.textMuted} leading-relaxed flex-grow`}>{t(`news.${n.id}.excerpt`)}</p>
                      </div>
                   </div>
                ))}
@@ -356,13 +356,13 @@ export default function Home() {
                         
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-60 group-hover:opacity-95 transition-opacity duration-500 flex flex-col justify-end p-6 md:p-8">
                            <p className="keep-white text-white/90 font-inter text-xs md:text-sm font-medium leading-relaxed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 line-clamp-4">
-                             {member.description}
+                             {t(`cast.${member.id}.desc`)}
                            </p>
                         </div>
                      </div>
                      <div className="text-center px-4">
-                        <h4 className={`font-mont font-bold text-lg md:text-xl mb-1 uppercase tracking-wide ${isLight ? 'text-[#2A1505]' : 'text-white'}`}>{member.actor}</h4>
-                        <p className={`text-xs sm:text-sm font-inter font-semibold tracking-[0.2em] uppercase text-p-amber`}>as {member.character}</p>
+                        <h4 className={`font-mont font-bold text-lg md:text-xl mb-1 uppercase tracking-wide ${isLight ? 'text-[#2A1505]' : 'text-white'}`}>{t(`cast.${member.id}.actor`)}</h4>
+                        <p className={`text-xs sm:text-sm font-inter font-semibold tracking-[0.2em] uppercase text-p-amber`}>{t('cast.as')} {t(`cast.${member.id}.character`)}</p>
                      </div>
                   </div>
                ))}

@@ -170,10 +170,10 @@ export default function Updates() {
           <div className="flex flex-col gap-8 max-w-4xl mx-auto">
             {songsList.map(song => (
               <div key={song.id} className={`hero-glass-card rounded-2xl p-6 md:p-10 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#FF9D00]/10 hover:border-[#FF9D00]/50 transition-all duration-300 text-center border flex flex-col items-center justify-center ${isLight ? 'border-[#7A4A10]/40 bg-white/50' : 'border-[#FF9D00]/40 bg-black/40'}`}>
-                <h3 className={`font-dirt font-black text-3xl sm:text-5xl uppercase tracking-[0.1em] ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'}`}>{song.title}</h3>
-                <p className={`font-inter text-[10px] md:text-xs mt-2 font-black tracking-widest uppercase ${isLight ? 'text-[#8B6040]' : 'text-p-muted'}`}>{song.subtitle}</p>
+                <h3 className={`font-dirt font-black text-3xl sm:text-5xl uppercase tracking-[0.1em] ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'}`}>{song.id === 1 ? t('updates.songs.chikiri') : t('updates.songs.rairai')}</h3>
+                <p className={`font-inter text-[10px] md:text-xs mt-2 font-black tracking-widest uppercase ${isLight ? 'text-[#8B6040]' : 'text-p-muted'}`}>{song.id === 1 ? t('updates.songs.firstSingle') : t('updates.songs.secondSingle')}</p>
                 
-                <p className={`font-inter text-xs font-semibold tracking-widest uppercase mt-8 mb-5 ${isLight ? 'text-[#5A3010]/60' : 'text-white/40'}`}>— Listen on YouTube —</p>
+                <p className={`font-inter text-xs font-semibold tracking-widest uppercase mt-8 mb-5 ${isLight ? 'text-[#5A3010]/60' : 'text-white/40'}`}>{t('updates.songs.listenYoutube')}</p>
                 
                 <div className="flex gap-3 justify-center flex-wrap">
                   {song.links.map(link => (
@@ -207,12 +207,12 @@ export default function Updates() {
                         <X size={24} />
                       </button>
                       
-                      <h2 className={`font-dirt font-black text-4xl sm:text-5xl uppercase tracking-widest ${isLight ? 'text-[#2A1505]' : 'text-white'} mb-3 mt-2 sm:mt-0 px-12 md:px-16`}>{item.title}</h2>
-                      <p className={`font-inter text-[10px] md:text-xs font-semibold tracking-widest uppercase ${isLight ? 'text-[#8B6040]' : 'text-zinc-500'} mb-10`}>Select Language</p>
+                      <h2 className={`font-dirt font-black text-4xl sm:text-5xl uppercase tracking-widest ${isLight ? 'text-[#2A1505]' : 'text-white'} mb-3 mt-2 sm:mt-0 px-12 md:px-16`}>{item.id === 'first-shot' ? t('updates.trailers.firstShot') : item.id === 'glimpse' ? t('updates.trailers.glimpse') : t('updates.trailers.trailer')}</h2>
+                      <p className={`font-inter text-[10px] md:text-xs font-semibold tracking-widest uppercase ${isLight ? 'text-[#8B6040]' : 'text-zinc-500'} mb-10`}>{t('updates.trailers.selectLanguage')}</p>
                       
                       {item.comingSoon ? (
                          <div className="py-6">
-                            <p className={`font-inter text-sm md:text-base font-semibold ${isLight ? 'text-[#7A4A10]/70' : 'text-zinc-400'} animate-pulse`}><span className={isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'}>•</span> Coming Soon</p>
+                            <p className={`font-inter text-sm md:text-base font-semibold ${isLight ? 'text-[#7A4A10]/70' : 'text-zinc-400'} animate-pulse`}><span className={isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'}>•</span> {t('updates.trailers.comingSoon')}</p>
                          </div>
                       ) : (
                          <div className="flex flex-col gap-3 w-full max-w-xl px-4 md:px-0 mx-auto">
@@ -232,7 +232,7 @@ export default function Updates() {
                      onClick={() => setActiveTrailerAccordion(item.id)}
                      className={`flex items-center justify-between hero-glass-card rounded-xl px-6 py-6 transition-all duration-300 border ${isLight ? 'border-[#7A4A10]/20 hover:border-[#7A4A10]/50 bg-white/40' : 'border-[#FF9D00]/20 hover:border-[#FF9D00]/50 bg-black/40 hover:shadow-[0_0_15px_rgba(255,157,0,0.15)] shadow-md'}`}
                    >
-                     <span className={`font-inter font-bold tracking-wide text-lg sm:text-xl ${isLight ? 'text-[#2A1505]' : 'text-white/90'}`}>{item.title}</span>
+                     <span className={`font-inter font-bold tracking-wide text-lg sm:text-xl ${isLight ? 'text-[#2A1505]' : 'text-white/90'}`}>{item.id === 'first-shot' ? t('updates.trailers.firstShot') : item.id === 'glimpse' ? t('updates.trailers.glimpse') : t('updates.trailers.trailer')}</span>
                      <Play size={20} className={isLight ? 'text-[#7A4A10]' : 'text-[#FF9D00]'} />
                    </button>
                 )}
@@ -241,7 +241,7 @@ export default function Updates() {
           </div>
         ) : activeFilter === 'Reels' ? (
           <div className="max-w-5xl mx-auto">
-            <p className={`text-center font-inter text-xs tracking-widest uppercase mb-10 ${isLight ? 'text-[#8B6040]' : 'text-zinc-500'}`}>— Official Instagram Reels —</p>
+            <p className={`text-center font-inter text-xs tracking-widest uppercase mb-10 ${isLight ? 'text-[#8B6040]' : 'text-zinc-500'}`}>{t('updates.reels.official')}</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {reelsList.map(reel => (
                 <a
@@ -294,15 +294,15 @@ export default function Updates() {
                   <img src={n.image} alt="Peddi movie official still 2026" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" style={{ objectPosition: n.objectPosition || 'center center' }} />
                   <div className="absolute top-3 left-3">
                     <span className={`font-inter font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-widest ${n.category === 'Announcement' ? 'bg-gradient-to-r from-p-golddk to-p-goldlt text-white shadow-[0_0_10px_rgba(255,157,0,0.4)]' : n.category === 'BTS' ? 'bg-p-golddk/80 text-white' : 'bg-p-gold/20 text-p-gold border border-p-gold/40'}`}>
-                      {n.category}
+                      {t(`news.${n.id}.category`)}
                     </span>
                   </div>
                 </div>
                 <div className="p-5 flex flex-col flex-grow">
-                  <span className={`font-inter font-black text-[10px] md:text-xs ${isLight ? 'text-[#8B6040]/70' : 'text-p-muted/60'} tracking-wider uppercase`}>{n.date}</span>
-                  <h3 className={`font-dirt font-bold uppercase tracking-wide text-lg ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'} mt-2 leading-snug`}>{n.title}</h3>
+                  <span className={`font-inter font-black text-[10px] md:text-xs ${isLight ? 'text-[#8B6040]/70' : 'text-p-muted/60'} tracking-wider uppercase`}>{t(`news.${n.id}.date`)}</span>
+                  <h3 className={`font-dirt font-bold uppercase tracking-wide text-lg ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'} mt-2 leading-snug`}>{t(`news.${n.id}.title`)}</h3>
                   <p className={`font-inter text-xs ${isLight ? 'text-[#5A3010]' : 'text-p-muted'} leading-relaxed mt-2`} style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                    {n.excerpt}
+                    {t(`news.${n.id}.excerpt`)}
                   </p>
                   <div className="mt-auto pt-4">
                     <span className={`font-inter font-bold text-xs ${isLight ? 'text-[#7A4A10]' : 'text-p-gold'} tracking-[0.2em] group-hover:translate-x-1 transition-transform uppercase inline-block mt-2`}>{t('updates.readMore')}</span>

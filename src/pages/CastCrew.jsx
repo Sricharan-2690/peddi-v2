@@ -94,9 +94,9 @@ export default function CastCrew() {
                   />
                 </div>
                 <div className="flex-grow">
-                  <p className="font-inter font-black text-[10px] tracking-widest text-p-gold/70 uppercase">as {member.character}</p>
-                  <h3 className="font-dirt font-bold uppercase tracking-wide text-lg text-p-gold mt-1">{member.actor}</h3>
-                  <p className="font-inter text-xs text-p-cream/60 mt-1 opacity-80 line-clamp-2">{member.description}</p>
+                  <p className="font-inter font-black text-[10px] tracking-widest text-p-gold/70 uppercase">{t('cast.as')} {t(`cast.${member.id}.character`)}</p>
+                  <h3 className="font-dirt font-bold uppercase tracking-wide text-lg text-p-gold mt-1">{t(`cast.${member.id}.actor`)}</h3>
+                  <p className="font-inter text-xs text-p-cream/60 mt-1 opacity-80 line-clamp-2">{t(`cast.${member.id}.desc`)}</p>
                 </div>
               </div>
             ))}
@@ -128,9 +128,9 @@ export default function CastCrew() {
                     )}
                   </div>
                   <div className="flex-grow">
-                    <p className="font-inter font-black text-[10px] tracking-widest text-p-gold/70 uppercase">{member.role}</p>
-                    <h3 className="font-dirt font-bold uppercase tracking-wide text-lg text-p-gold mt-1">{member.name}</h3>
-                    <p className="font-inter text-xs text-p-cream/60 mt-1 opacity-80">{member.note}</p>
+                    <p className="font-inter font-black text-[10px] tracking-widest text-p-gold/70 uppercase">{t(`crew.${i + 1}.role`)}</p>
+                    <h3 className="font-dirt font-bold uppercase tracking-wide text-lg text-p-gold mt-1">{t(`crew.${i + 1}.name`)}</h3>
+                    <p className="font-inter text-xs text-p-cream/60 mt-1 opacity-80">{t(`crew.${i + 1}.note`)}</p>
                   </div>
                 </div>
               );
